@@ -10,8 +10,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ComplexFileDefinition {
+public class ComplexFileDefinition{
 	private Map<String,AbstractSimpleFile> rowTypes;
+	private Map<String,List<Integer>> rowIDFields;
 	private Class<Object> rootType;
-	private Integer typeFieldNumber;
+	private Integer typeFieldSize;
+	private String typeResetValue;
 }

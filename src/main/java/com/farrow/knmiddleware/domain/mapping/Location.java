@@ -1,5 +1,6 @@
 package com.farrow.knmiddleware.domain.mapping;
 
+
 import java.util.List;
 
 import lombok.Getter;
@@ -9,8 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class AbstractSimpleFile {	
-	private List<Location> location;
-	private Class<Object> rootType;
-	private List<Field> fields;
+public class Location {
+	private String prop;
+	private boolean isList = false;
 }
