@@ -40,19 +40,19 @@ public class ResourceConfig {
 		
 		HikariDataSource ds = dataSourceBuilder.build();
 		ds.setConnectionTestQuery("VALUES 1");
-		ds.setMaximumPoolSize(50);
+		ds.setMaximumPoolSize(20);
 		ds.setLeakDetectionThreshold(MINUTES.toMillis(4));
 		ds.setMaxLifetime(MINUTES.toMillis(5));
 		return ds;
 	}
 
-	@Bean("imagePackagingShedLockProvider")
+	@Bean("shedLockProvider")
 	LockProvider lockProvider() {
 		return new JdbcTemplateLockProvider(JdbcTemplateLockProvider.Configuration.builder()
 				.withJdbcTemplate(new JdbcTemplate(dataSource())).usingDbTime().build());
 	}
 
-	@Bean("imagePackagingLockingTaskExecutor")
+	@Bean("lockingTaskExecutor")
 	LockingTaskExecutor lockingTaskExecutor() {
 		return new DefaultLockingTaskExecutor(lockProvider());
 	}

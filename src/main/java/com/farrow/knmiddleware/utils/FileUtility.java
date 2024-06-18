@@ -24,29 +24,12 @@ public class FileUtility {
 		return file;
 	}
 
-	/**
-	 * Gets file from byte.
-	 *
-	 * @param bytes     the bytes
-	 * @param extension the extension
-	 * @return the file from byte
-	 * @throws IOException the io exception
-	 */
 	public File getFileFromByte(byte[] bytes, String extension) throws IOException {
 		File file = new File(getTmpDir().getAbsolutePath() + File.separator + Thread.currentThread().threadId() + extension);
 		FileUtils.writeByteArrayToFile(file, bytes);
 		return file;
 	}
 
-	/**
-	 * Gets file from byte.
-	 *
-	 * @param bytes     the bytes
-	 * @param fileName  the file name
-	 * @param extension the extension
-	 * @return the file from byte
-	 * @throws IOException the io exception
-	 */
 	public File getFileFromByte(byte[] bytes, String fileName, String extension) throws IOException {
 		File file = new File(getTmpDir().getAbsolutePath() + File.separator + fileName + Thread.currentThread().threadId() + extension);
 		FileUtils.writeByteArrayToFile(file, bytes);
@@ -85,14 +68,12 @@ public class FileUtility {
 		}
 	}
 
-	/**
-	 * Get byte from base 64 byte [ ].
-	 *
-	 * @param label the label
-	 * @return the byte [ ]
-	 */
 	public static byte[] getByteFromBase64(String label) {
 		return Base64.decodeBase64(label);
+	}
+	
+	public static String getBase64fromByte(byte[] scr) {
+		return Base64.encodeBase64String(scr);
 	}
 
 	/**

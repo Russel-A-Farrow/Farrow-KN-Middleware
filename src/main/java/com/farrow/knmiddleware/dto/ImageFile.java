@@ -2,8 +2,7 @@ package com.farrow.knmiddleware.dto;
 
 public class ImageFile {
 	private byte[] file;
-	private String fileName;
-	
+	private String fileName;	
 	
 	public ImageFile(){
 		
