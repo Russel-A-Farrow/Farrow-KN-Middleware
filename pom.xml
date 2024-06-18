@@ -21,7 +21,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
+		<dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -93,14 +101,108 @@
 		    <version>0.2.18</version>
 		</dependency>
 
+        
+        <!-- https://mvnrepository.com/artifact/net.sf.jt400/jt400 -->
+		<dependency>
+		    <groupId>net.sf.jt400</groupId>
+		    <artifactId>jt400</artifactId>
+		    <version>20.0.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-rt -->
+		<dependency>
+		    <groupId>com.sun.xml.ws</groupId>
+		    <artifactId>jaxws-rt</artifactId>
+		    <version>4.0.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
+		<finalName>KNMiddleware</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+			<plugin>
+	            <groupId>com.sun.xml.ws</groupId>
+	            <artifactId>jaxws-maven-plugin</artifactId>
+	            <version>4.0.2</version>
+	            <executions>
+	                <execution>
+	                <id>generate-java-sources</id>
+			        <phase>process-sources</phase>
+	                    <goals>
+	                        <goal>wsimport</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	            <configuration>
+			        <wsdlDirectory>${project.basedir}/src/main/resources/xsds/</wsdlDirectory>
+			        <wsdlFiles>
+			            <wsdlFile>Acon_Interface_XSD/Get_AR_Invoice_Due_Date/kn-InvoiceService-V1.wsdl</wsdlFile>
+			            <wsdlFile>Acon_Interface_XSD/Get_Debtor_Info/kn-DebtorInfoService-V1_2.wsdl</wsdlFile>
+			        </wsdlFiles>
+			    </configuration>
+        	</plugin>
+			<plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-xjc-plugin</artifactId>
+                <version>4.0.1</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>xsdtojava</goal>
+                        </goals>
+                        <configuration>
+                            <xsdOptions>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/AR_Invoice_Integrity/KN-InvoiceIntegrityData-V1_1.xsd</xsd>
+                                    <packagename>com.kn.services.invoiceIntegrity</packagename>
+                                </xsdOption>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/KN-ShipmentDetails-V1_6/KN-ShipmentDetails-V1_6.xsd</xsd>
+                                    <packagename>com.kn.services.shipmentdetails</packagename>
+                                </xsdOption>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/FSL_Transfer/KN-FileTransfers-V1_1.xsd</xsd>
+                                    <packagename>com.kn.services.filetransfers</packagename>
+                                </xsdOption>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/FSL_Integrity/KN-FSLIntegrityData-V1_0.xsd</xsd>
+                                    <packagename>com.kn.services.fslintegritydata</packagename>
+                                </xsdOption>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/FSL_Expected_GP/KN-ExpectedGPs-V1_1.xsd</xsd>
+                                    <packagename>com.kn.services.expectedgps</packagename>
+                                </xsdOption>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/FSL_Accrual/KN-AccruedExpenses-V1_2.xsd</xsd>
+                                    <packagename>com.kn.services.accuredexpenses</packagename>
+                                </xsdOption>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/AR_Invoice/KN-InvoiceHeaderInfo-V1_1.xsd</xsd>
+                                    <packagename>com.kn.services.kninvoiceheader</packagename>
+                                </xsdOption>
+                                <xsdOption>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/AR_Invoice/customize/KN-UBL-Invoice-2.0.xsd</xsd>
+                                    <!--<packagename>com.kn.services.invoicear</packagename>-->
+                                    <bindingFile>${project.basedir}/src/main/resources/xsds/binding.xjb</bindingFile>
+                                </xsdOption>
+                            </xsdOptions>
+                        </configuration>
+                    </execution>
+                </executions>                    
+            </plugin>
 		</plugins>
 	</build>
 

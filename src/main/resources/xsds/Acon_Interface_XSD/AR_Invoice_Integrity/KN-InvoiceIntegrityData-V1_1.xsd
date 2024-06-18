@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ (C) Copyright. Kuehne + Nagel All rights reserved.
+  ~
+  ~ This document, which contains confidential material, is private and
+  ~ confidential and is the property and copyright of Kuehne + Nagel. It is not
+  ~ to be used for any other purposes, copied, distributed or transmitted in any
+  ~ form or by any means without the prior written consent of Kuehne + Nagel.
+  ~ Infringement of copyright is a serious civil and criminal offense, which can
+  ~ result in heavy fines and payment of substantial damages.
+  -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:com="http://services.kn.com/xsd/acon/Common/v1"
+           xmlns:inv="http://services.kn.com/xsd/acon/invoice/v1"
+           xmlns="http://services.kn.com/xsd/acon/invoice/v1"
+           targetNamespace="http://services.kn.com/xsd/acon/invoice/v1"
+           attributeFormDefault="unqualified" elementFormDefault="qualified"
+           version="1.0">
+
+    <xsd:import namespace="http://services.kn.com/xsd/acon/Common/v1"
+               schemaLocation="../common/ACON-CommonTypes-V1_1.xsd"/>
+
+    <xsd:element name="InvoiceIntegrityInfos">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="InvoiceIntegrityInfo" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="InvoiceIntegrityInfo" type="InvoiceIntegrityInfoType"/>
+
+    <xsd:complexType name="InvoiceIntegrityInfoType">
+        <xsd:sequence>
+            <xsd:element type="com:CompanyCodeType" name="CompanyCode" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:CallingApplicationType" name="CallingApplication" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:DebtorCodeType" name="DebtorCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ItemTypeType" name="ItemType" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:ItemNoType" name="ItemNo" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:CurrencyCodeType" name="ItemCurrency" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="ItemLCAmount" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="ItemFCAmount" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:date" name="ItemDate" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="MessageRequestIdType" name="MessageRequestId" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:simpleType name="MessageRequestIdType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="40"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

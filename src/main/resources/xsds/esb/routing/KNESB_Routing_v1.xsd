@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by XMLSpy 2007 Enterprise Ed., Concurrent for 2 users (Kühne + Nagel (AG & Co.) KG) -->
+<xsd:schema xmlns:routing="http://knesb.int.kn/xsd/esb/routing/v1/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://knesb.int.kn/xsd/esb/routing/v1/" elementFormDefault="qualified" version="1.0">
+	<xsd:element name="Routing">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="EN">KNESB Header for Routing.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Properties">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="EN">This element is just a container for the routing properties.</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Property" maxOccurs="unbounded">
+								<xsd:annotation>
+									<xsd:documentation xml:lang="EN">A routing property is characterized by a name and a value.</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string">
+											<xsd:attribute name="Name" use="required">
+												<xsd:annotation>
+													<xsd:documentation xml:lang="EN">Name of the property. The allowed property names to be used are the same as for JMS.</xsd:documentation>
+												</xsd:annotation>
+												<xsd:simpleType>
+													<xsd:restriction base="xsd:string">
+														<xsd:enumeration value="KNESB_Routing_Country"/>
+														<xsd:enumeration value="KNESB_Routing_Company"/>
+														<xsd:enumeration value="KNESB_Routing_Branch"/>
+														<xsd:enumeration value="KNESB_Routing_Department"/>
+														<xsd:enumeration value="KNESB_Routing_SenderId"/>
+														<xsd:enumeration value="KNESB_Routing_SenderInstance"/>
+														<xsd:enumeration value="KNESB_Routing_ReceiverId"/>
+														<xsd:enumeration value="KNESB_Routing_ReceiverInstance"/>
+													</xsd:restriction>
+												</xsd:simpleType>
+											</xsd:attribute>
+										</xsd:extension>
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+					<xsd:unique name="UniqueConstraint">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="EN">The same routing property may only be used once. Again this is the same behavior as for JMS.</xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="routing:Property"/>
+						<xsd:field xpath="@Name"/>
+					</xsd:unique>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

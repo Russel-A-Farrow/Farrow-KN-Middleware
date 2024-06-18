@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ (C) Copyright. Kuehne + Nagel All rights reserved.
+  ~
+  ~ This document, which contains confidential material, is private and
+  ~ confidential and is the property and copyright of Kuehne + Nagel. It is not
+  ~ to be used for any other purposes, copied, distributed or transmitted in any
+  ~ form or by any means without the prior written consent of Kuehne + Nagel.
+  ~ Infringement of copyright is a serious civil and criminal offense, which can
+  ~ result in heavy fines and payment of substantial damages.
+  -->
+
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://services.kn.com/wsdl/acon/account/DebtorInfoService/v1_2"
+                  xmlns:dbtifo="http://services.kn.com/xsd/acon/account/DebtorInfoService/v1_2"
+                  xmlns:audit="http://knesb.int.kn/xsd/esb/audit/v01"
+                  xmlns:routing="http://knesb.int.kn/xsd/esb/routing/v1/"
+                  targetNamespace="http://services.kn.com/wsdl/acon/account/DebtorInfoService/v1_2">
+    <wsdl:types xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+            <xsd:import namespace="http://services.kn.com/xsd/acon/Common/v1"
+                       schemaLocation="../common/ACON-CommonTypes-V1_1.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+
+            <xsd:import namespace="http://services.kn.com/xsd/acon/account/DebtorInfoService/v1_2"
+                       schemaLocation="KN-DebtorInfoService-V1_2.xsd"/>
+            <xsd:import namespace="http://knesb.int.kn/xsd/esb/audit/v01" schemaLocation="../../esb/audit/KNESB_Audit_v01_1.1.xsd"/>
+            <xsd:import namespace="http://knesb.int.kn/xsd/esb/routing/v1/" schemaLocation="../../esb/routing/KNESB_Routing_v1.xsd"/>
+
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="AuditHeader">
+        <wsdl:part name="AuditHeader" element="audit:Audit"/>
+    </wsdl:message>
+    <wsdl:message name="RoutingHeader">
+        <wsdl:part name="RoutingHeader" element="routing:Routing"/>
+    </wsdl:message>
+    <wsdl:message name="GetDebtorInfoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part name="GetDebtorInfoRequest" element="dbtifo:GetDebtorInfoRequest"
+                   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetDebtorInfoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:part name="GetDebtorInfoResponse" element="dbtifo:GetDebtorInfoResponse"
+                   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="DebtorInfoServiceInterface" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:operation name="GetDebtorInfo" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <wsdl:input message="tns:GetDebtorInfoRequest" name="GetDebtorInfoRequest"
+                        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:input>
+            <wsdl:output message="tns:GetDebtorInfoResponse" name="GetDebtorInfoResponse"
+                         xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="DebtorInfoServiceInterfaceSoap11" type="tns:DebtorInfoServiceInterface"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"
+                      xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        <wsdl:operation name="GetDebtorInfo" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:operation soapAction="http://services.kn.com/wsdl/acon/account/DebtorInfoService/v1_2/GetDebtorInfo" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input name="GetDebtorInfoRequest" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:header part="AuditHeader" message="tns:AuditHeader" use="literal"/>
+                <soap:header part="RoutingHeader" message="tns:RoutingHeader" use="literal"/>
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            </wsdl:input>
+            <wsdl:output name="GetDebtorInfoResponse" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="DebtorInfoServiceInterfaceService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <wsdl:port binding="tns:DebtorInfoServiceInterfaceSoap11" name="DebtorInfoServiceInterfaceSoap11"
+                   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <soap:address location="http://localhost:9090/acon_iia/wsdl/"
+                          xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

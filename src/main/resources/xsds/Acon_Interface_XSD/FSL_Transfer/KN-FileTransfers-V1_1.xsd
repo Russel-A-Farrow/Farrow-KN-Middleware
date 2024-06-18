@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ (C) Copyright. Kuehne + Nagel All rights reserved.
+  ~
+  ~ This document, which contains confidential material, is private and
+  ~ confidential and is the property and copyright of Kuehne + Nagel. It is not
+  ~ to be used for any other purposes, copied, distributed or transmitted in any
+  ~ form or by any means without the prior written consent of Kuehne + Nagel.
+  ~ Infringement of copyright is a serious civil and criminal offense, which can
+  ~ result in heavy fines and payment of substantial damages.
+  -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:com="http://services.kn.com/xsd/acon/Common/v1"
+           xmlns="http://services.kn.com/xsd/acon/fsl/FileTransfers/v1"
+           targetNamespace="http://services.kn.com/xsd/acon/fsl/FileTransfers/v1"
+           attributeFormDefault="unqualified" elementFormDefault="qualified"
+           version="1.0">
+
+    <xsd:import namespace="http://services.kn.com/xsd/acon/Common/v1"
+               schemaLocation="../common/ACON-CommonTypes-V1_1.xsd"/>
+
+    <xsd:element name="FileTransfers">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="FileTransfer" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="FileTransfer" type="FileTransferType"/>
+
+    <xsd:complexType name="FileTransferType">
+        <xsd:sequence>
+            <xsd:element type="com:CompanyCodeType" name="CompanyCodeFrom" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:TrackingNoType" name="TrackingNoFrom" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ProfitCentreType" name="ProfitCentreFrom" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:FilePeriodType" name="FilePeriodFrom" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:JobFileNoType" name="JobFileNoFrom" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:YesNoType" name="BillingCompletedInFrom" minOccurs="1" maxOccurs="1"/>
+
+            <xsd:element type="com:CompanyCodeType" name="CompanyCodeTo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:TrackingNoType" name="TrackingNoTo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ProfitCentreType" name="ProfitCentreTo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:FilePeriodType" name="FilePeriodTo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:JobFileNoType" name="JobFileNoTo" minOccurs="0" maxOccurs="1"/>
+
+            <xsd:element type="com:TxReferenceType" name="TxReference" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CallingApplicationType" name="CallingApplication" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="xsd:date" name="TransferDate" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:CreditorCodeType" name="CreditorCode" minOccurs="0" maxOccurs="1"/>
+
+            <xsd:element type="com:OpsChargeCodeType" name="ChargeCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ChargeCategoryType" name="ChargeCategory" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="TransferTypeType" name="TransferType" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:CurrencyCodeType" name="CurrencyCode" minOccurs="1" maxOccurs="1"/>
+
+            <xsd:element type="com:DecimalPlaceType" name="LCDecimalPlace" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="TransferLCAmount" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="RemarksType" name="Remark" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ItemTypeType" name="ItemType" minOccurs="0" maxOccurs="1"/>
+
+            <xsd:element type="com:ItemNoType" name="ItemNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SequenceNoType" name="SequenceNo" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:simpleType name="TransferTypeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:enumeration value="R"/>
+            <xsd:enumeration value="E"/>
+            <xsd:enumeration value="I"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="RemarksType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="50"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="SequenceNoType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="5"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

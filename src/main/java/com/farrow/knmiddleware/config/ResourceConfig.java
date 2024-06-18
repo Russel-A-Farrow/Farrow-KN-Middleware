@@ -1,4 +1,4 @@
-package com.farrow.knmiddleware;
+package com.farrow.knmiddleware.config;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -46,13 +46,13 @@ public class ResourceConfig {
 		return ds;
 	}
 
-	@Bean("shedLockProvider")
+	@Bean("knadapterShedLockProvider")
 	LockProvider lockProvider() {
 		return new JdbcTemplateLockProvider(JdbcTemplateLockProvider.Configuration.builder()
 				.withJdbcTemplate(new JdbcTemplate(dataSource())).usingDbTime().build());
 	}
 
-	@Bean("lockingTaskExecutor")
+	@Bean("knadapterLockingTaskExecutor")
 	LockingTaskExecutor lockingTaskExecutor() {
 		return new DefaultLockingTaskExecutor(lockProvider());
 	}

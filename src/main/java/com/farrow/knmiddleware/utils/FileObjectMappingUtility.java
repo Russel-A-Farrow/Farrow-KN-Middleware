@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.farrow.knmiddleware.domain.mapping.AbstractSimpleFile;
 import com.farrow.knmiddleware.domain.mapping.ComplexFileDefinition;
@@ -20,7 +21,10 @@ import com.farrow.knmiddleware.domain.mapping.FlatFileDefinition;
 import com.farrow.knmiddleware.domain.mapping.Location;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Component
 public class FileObjectMappingUtility {
+	
+	public static final String DO_NOT_MAP = "^DONOTMAP^";
 	@Autowired private ObjectMapper mapper;
 	
 	public List<Object> getObjectFromComplexFile(InputStream fileIs, ComplexFileDefinition file) throws IOException {
@@ -42,11 +46,22 @@ public class FileObjectMappingUtility {
 		return list;
 	}
 	
+	public List<Object> getObjectFromSimpleFile(InputStream fileIs, AbstractSimpleFile file) throws IOException {
+		List<Object> list = new ArrayList<>();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(fileIs));
+		String line = null;
+		while ((line = reader.readLine())!=null) {
+			Object value = mapLine(line,file);
+			list.add(mapper.convertValue(value, file.getRootType()));
+		}
+		return list;
+	}
+	
 	private void addToMapLocation(Object value, List<Location> location, Map<String,Object> map) {
 		if(location==null || location.size()==0) {
 			throw new UnsupportedOperationException("Location not defined");
 		}
-		if(location.get(0).getProp()!="^DONOTMAP^") {
+		if(location.get(0).getProp()!=DO_NOT_MAP) {
 			Map<String,Object> currentMap = map;
 			for(int i=0;i<location.size();i++) {
 				String prop=location.get(i).getProp();
@@ -94,7 +109,7 @@ public class FileObjectMappingUtility {
 		for(int i=0;i<def.getFields().size();i++) {
 			Field field = def.getFields().get(i);
 			Object value = field.parse(tempFields.get(i));
-			addToMapLocation(value,def.getLocation(),map);
+			addToMapLocation(value,field.getLocation(),map);
 		}
 		return mapper.convertValue(map, def.getRootType());
 	}
@@ -107,8 +122,8 @@ public class FileObjectMappingUtility {
 		for(int i=0;i<def.getFields().size();i++) {
 			Field field = def.getFields().get(i);
 			Object value = field.parse(line.substring(startPos, startPos+field.getSize()));
-			startPos=field.getSize();
-			addToMapLocation(value,def.getLocation(),map);
+			startPos+=field.getSize();
+			addToMapLocation(value,field.getLocation(),map);
 		}
 		return mapper.convertValue(map, def.getRootType());
 	}

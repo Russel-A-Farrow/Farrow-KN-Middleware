@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ (C) Copyright. Kuehne + Nagel All rights reserved.
+  ~
+  ~ This document, which contains confidential material, is private and
+  ~ confidential and is the property and copyright of Kuehne + Nagel. It is not
+  ~ to be used for any other purposes, copied, distributed or transmitted in any
+  ~ form or by any means without the prior written consent of Kuehne + Nagel.
+  ~ Infringement of copyright is a serious civil and criminal offense, which can
+  ~ result in heavy fines and payment of substantial damages.
+  -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:com="http://services.kn.com/xsd/acon/Common/v1"
+           xmlns="http://services.kn.com/xsd/acon/fsl/ExpectedGPs/v1"
+           targetNamespace="http://services.kn.com/xsd/acon/fsl/ExpectedGPs/v1"
+           attributeFormDefault="unqualified" elementFormDefault="qualified"
+           version="1.0">
+
+    <xsd:import namespace="http://services.kn.com/xsd/acon/Common/v1"
+               schemaLocation="../common/ACON-CommonTypes-V1_1.xsd"/>
+
+    <xsd:element name="ExpectedGPs">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="ExpectedGP" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="ExpectedGP" type="ExpectedGPType"/>
+
+    <xsd:complexType name="ExpectedGPType">
+        <xsd:sequence>
+            <xsd:element type="com:CompanyCodeType" name="CompanyCode" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:CallingApplicationType" name="CallingApplication" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:TrackingNoType" name="TrackingNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ProfitCentreType" name="ProfitCentre" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:FilePeriodType" name="FilePeriod" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="LCAmount" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="LastUpdatedUserType" name="LastUpdatedUser" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:JobFileNoType" name="JobFileNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ReasonCodeType" name="ReasonCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ReasonCodeNameType" name="ReasonCodeName" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="CommentType" name="Comment" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>	
+    </xsd:complexType>
+
+    <xsd:simpleType name="LastUpdatedUserType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="50"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ReasonCodeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="5"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ReasonCodeNameType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="35"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="CommentType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="512"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

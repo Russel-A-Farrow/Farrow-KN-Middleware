@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:audit="http://knesb.int.kn/xsd/esb/audit/v01"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://knesb.int.kn/xsd/esb/audit/v01"
+    elementFormDefault="qualified"
+    version="1.1">
+  <xsd:element name="Audit">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="EN">KNESB Header Properties for Logging and Monitoring</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ApplicationID" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="EN">
+Identification of requestor, e.g. eCommerce
+List of values maintained by ESB Team
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="RequestID" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="EN">UUID, Unique for one request</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="CorrelationID" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="EN">
+UUID Unique ID for one or multiple requests provided by the sender
+This ID might be identical with the RequestID
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="ServiceName" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="EN">Name of the process or project, in most cases the name of the web service</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="ServiceOperation" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="EN">Name of the individual operation or method invoked with this request</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="BusinessKeys" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="EN">Business Key information provided by the sender for indentifying the request</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="BusinessKey1" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="BusinessKey2" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="BusinessKey3" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="BusinessKey4" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="BusinessKey5" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
