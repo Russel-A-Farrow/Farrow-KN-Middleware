@@ -38,7 +38,6 @@ import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
 import oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory;
 
 @SpringBootTest(properties= {"deploymentLevel=development"})
-
 public class MappingTest {
 
 	@Autowired FileObjectMappingUtility mapper;
