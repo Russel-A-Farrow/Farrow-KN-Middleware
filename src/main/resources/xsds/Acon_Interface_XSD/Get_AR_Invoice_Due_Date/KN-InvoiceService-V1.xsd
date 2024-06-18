@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * (C) Copyright. Kuehne + Nagel All rights reserved.
+ *
+ * This document, which contains confidential material, is private and
+ * confidential and is the property and copyright of Kuehne + Nagel. It is not
+ * to be used for any other purposes, copied, distributed or transmitted in any
+ * form or by any means without the prior written consent of Kuehne + Nagel.
+ * Infringement of copyright is a serious civil and criminal offense, which can
+ * result in heavy fines and payment of substantial damages.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://services.kn.com/xsd/acon/invoice/InvoiceService/v1"
+           xmlns:com="http://services.kn.com/xsd/acon/Common/v1"
+           targetNamespace="http://services.kn.com/xsd/acon/invoice/InvoiceService/v1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0">
+
+    <xsd:import namespace="http://services.kn.com/xsd/acon/Common/v1"
+               schemaLocation="../common/ACON-CommonTypes-V1_1.xsd"/>
+
+    <xsd:element name="GetInvoiceDueDateRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="CompanyCode" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="DebtorCode" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="ItemType" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="ItemDate" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="TrackingNo" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="ProfitCentre" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="BusinessType" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="IsCashInvoice" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="CallingApplication" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="ItemCurrency" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="ChargeType" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="JobFileNo" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="GetInvoiceDueDateResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="DueDate" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="PaymentTerm" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="CreditTerm" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="IsPrintDueDate" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="SpecialText" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="CompanyCode" type="com:CompanyCodeType"/>
+    <xsd:element name="DebtorCode" type="com:DebtorCodeType"/>
+    <xsd:element name="ItemType" type="com:ItemTypeType"/>
+    <xsd:element name="ItemDate" type="xsd:date"/>
+    <xsd:element name="TrackingNo" type="com:TrackingNoType"/>
+    <xsd:element name="BusinessType" type="BusinessTypeType"/>
+    <xsd:element name="IsCashInvoice" type="com:YesNoType"/>
+    <xsd:element name="CallingApplication" type="com:CallingApplicationType"/>
+    <xsd:element name="ProfitCentre" type="com:ProfitCentreType"/>
+    <xsd:element name="DueDate" type="xsd:date"/>
+    <xsd:element name="IsPrintDueDate" type="com:YesNoType"/>
+    <xsd:element name="SpecialText" type="SpecialTextType"/>
+    <xsd:element name="ItemCurrency" type="com:CurrencyCodeType"/>
+    <xsd:element name="ChargeType" type="ChargeTypeType"/>
+    <xsd:element name="JobFileNo" type="com:JobFileNoType"/>
+    <xsd:element name="PaymentTerm" type="PaymentTermType"/>
+    <xsd:element name="CreditTerm" type="CreditTermType"/>
+
+    <xsd:simpleType name="SpecialTextType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="74"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ChargeTypeType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="BusinessTypeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:enumeration value="A"/>
+            <xsd:enumeration value="C"/>
+            <xsd:enumeration value="O"/>
+            <xsd:enumeration value="S"/>
+            <xsd:enumeration value="W"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="PaymentTermType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="3"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="CreditTermType">
+        <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="3"/>
+            <xsd:fractionDigits value="0"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

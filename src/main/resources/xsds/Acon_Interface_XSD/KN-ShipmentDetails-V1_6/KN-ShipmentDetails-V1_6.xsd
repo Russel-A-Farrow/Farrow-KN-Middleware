@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ (C) Copyright. Kuehne + Nagel All rights reserved.
+  ~
+  ~ This document, which contains confidential material, is private and
+  ~ confidential and is the property and copyright of Kuehne + Nagel. It is not
+  ~ to be used for any other purposes, copied, distributed or transmitted in any
+  ~ form or by any means without the prior written consent of Kuehne + Nagel.
+  ~ Infringement of copyright is a serious civil and criminal offense, which can
+  ~ result in heavy fines and payment of substantial damages.
+  -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:com="http://services.kn.com/xsd/acon/Common/v1"
+           xmlns="http://services.kn.com/xsd/acon/fsl/ShipmentDetails/v1"
+           targetNamespace="http://services.kn.com/xsd/acon/fsl/ShipmentDetails/v1"
+           attributeFormDefault="unqualified" elementFormDefault="qualified"
+           version="1.0">
+
+    <xsd:import namespace="http://services.kn.com/xsd/acon/Common/v1"
+               schemaLocation="../common/ACON-CommonTypes-V1_1.xsd"/>
+
+    <xsd:element name="ShipmentDetails">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="ShipmentDetail" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="ShipmentDetail" type="ShipmentDetailType"/>
+
+    <xsd:complexType name="ShipmentDetailType">
+        <xsd:sequence>
+            <xsd:element type="com:CompanyCodeType" name="CompanyCode" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:TrackingNoType" name="TrackingNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ProfitCentreType" name="ProfitCentre" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:FilePeriodType" name="FilePeriod" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="FileTypeType" name="FileType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="CoverFileTrackingNoType" name="CoverFileTrackingNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="AirSeaIndType" name="AirSeaInd" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ExportImportIndType" name="ExportImportInd" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ShipmentTypeType" name="ShipmentType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CountryCodeType" name="OriginCountry" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="LocationType" name="OriginLocation" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CountryCodeType" name="DestinationCountry" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="LocationType" name="DestinationLocation" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="BFSegmentType" name="BFSegment" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SALogCustomerCodeType" name="Shipper" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SALogCustomerCodeType" name="Consignee" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SALogCustomerCodeType" name="Principal" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="IncotermsType" name="Incoterms" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="AirfreightProductType" name="AirfreightProduct" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SALogCustomerRefType" name="ShipperReference" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SALogCustomerRefType" name="ConsigneeReference" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SALogCustomerRefType" name="PrincipalReference" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:date" name="EtdEtsDate" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:date" name="EtaDate" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ConsignmentIDType" name="ConsignmentID" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="MawbNoType" name="MawbNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="HawbNoType" name="HawbNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="BranchOfficeNoType" name="BranchOfficeNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="LocationPortType" name="ExitLocationPort" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="LocationPortType" name="EntryLocationPort" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ExportCielFileRefType" name="ExportCielFileRef" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ClientNameType" name="ShipperName" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ClientNameType" name="ConsigneeName" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ClientNameType" name="PrincipalName" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ClientCIDType" name="ShipperCid" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ClientCIDType" name="ConsigneeCid" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ClientCIDType" name="PrincipalCid" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CountryCodeType" name="PortOfExitCountry" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CountryCodeType" name="PortOfEntryCountry" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:JobFileNoType" name="A2KJobFileNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SALogCustomerCodeType" name="FinalAgent" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ClientNameType" name="FinalAgentName" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="CarrierCodeType" name="CarrierCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ChargeGroupType" name="CategoryCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="NoOfPieces" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="GrossWeight" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="ChargeableWeight" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="VolumeInCBM" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SALogCustomerCodeType" name="DeliveryAgent" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:DebtorCodeType" name="DeliveryAgentAconDebtor" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="TransportReferenceType" name="TransportReference" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="LocationPortType" name="OperationalDepartment" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="InlandSharingPercent" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:JobFileNoType" name="InlandSharingFromJobFileNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="PrincipalAconDebtorType" name="PrincipalAconDebtor" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="SharingPercent" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CompanyCodeType" name="SharingPartnerCompanyCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:DebtorCodeType" name="SharingPartnerAconDebtor" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ProfitCentreType" name="SharingPartnerShortCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ProfitCentreType" name="InlandSharingToShortCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:FilePeriodType" name="InlandSharingToFilePeriod" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ShipmentStatusTypeType" name="ShipmentStatusType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="ShipmentStatusCodeType" name="ShipmentStatusCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="MasterJobFileRefType" name="MasterJobFileRef" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="TransportDocTypeType" name="TransportDocType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="SharingPercent2" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CompanyCodeType" name="SharingPartnerCompanyCode2" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:DebtorCodeType" name="SharingPartnerAconDebtor2" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ProfitCentreType" name="SharingPartnerShortCode2" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CreditorCodeType" name="GpMarginCommAgentSharingPartnerAconCreditor" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="GpMarginCommAgentSharingPercent" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CreditorCodeType" name="GpMarginCommSalesSharingPartnerAconCreditor" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="GpMarginCommSalesSharingPercent" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:ProfitCentreType" name="PreviousFSLProfitCentre" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:FilePeriodType" name="PreviousFSLFilePeriod" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="BranchOfficeNoType" name="PreviousFSLBranchOfficeNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:JobFileNoType" name="PreviousFSLA2KJobFileNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="SharingAmount" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CurrencyCodeType" name="SharingCurrency" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:decimal" name="SharingAmount2" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="com:CurrencyCodeType" name="SharingCurrency2" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+        
+	<xsd:simpleType name="TransportDocTypeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="50"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+	<xsd:simpleType name="MasterJobFileRefType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="17"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="ShipmentStatusCodeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="10"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ShipmentStatusTypeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="10"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="CarrierCodeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="4"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="TransportReferenceType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="30"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ClientCIDType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="10"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ClientNameType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="71"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="FileTypeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="3"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="CoverFileTrackingNoType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="10"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="AirSeaIndType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="1"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ExportImportIndType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="1"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ShipmentTypeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="10"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="LocationType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="3"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="BFSegmentType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="20"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="SALogCustomerCodeType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="12"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="PrincipalAconDebtorType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="10"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="IncotermsType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="3"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="AirfreightProductType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="2"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="SALogCustomerRefType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="35"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="ConsignmentIDType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="10"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="MawbNoType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="12"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="HawbNoType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="35"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="BranchOfficeNoType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="4"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="LocationPortType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="3"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="ExportCielFileRefType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="17"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+</xsd:schema>

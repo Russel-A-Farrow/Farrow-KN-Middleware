@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * (C) Copyright. Kuehne + Nagel All rights reserved.
+ *
+ * This document, which contains confidential material, is private and
+ * confidential and is the property and copyright of Kuehne + Nagel. It is not
+ * to be used for any other purposes, copied, distributed or transmitted in any
+ * form or by any means without the prior written consent of Kuehne + Nagel.
+ * Infringement of copyright is a serious civil and criminal offense, which can
+ * result in heavy fines and payment of substantial damages.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://services.kn.com/xsd/acon/account/DebtorInfoService/v1_2"
+           xmlns:com="http://services.kn.com/xsd/acon/Common/v1"
+           targetNamespace="http://services.kn.com/xsd/acon/account/DebtorInfoService/v1_2"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0">
+
+    <xsd:import namespace="http://services.kn.com/xsd/acon/Common/v1"
+               schemaLocation="../common/ACON-CommonTypes-V1_1.xsd"/>
+
+    <xsd:element name="GetDebtorInfoRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="CompanyCode" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="DebtorCode" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="GetDebtorInfoResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="CreditLimit" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="DebtorBalance" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="SuspendedIndicator" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="ClassCode" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="CountryTotalBalance" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="TotalApprovedCCMAmount" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="TotalPendingCCMAmount" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="DefaultPaymentTerm" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="DefaultCreditTerms" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="CreditLimitExpiryDate" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="DoubtfulIndicator" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="CurrencyCode" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="MasterAccountCode" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="MasterAccountFlag" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="CompanyCode" type="com:CompanyCodeType"/>
+    <xsd:element name="DebtorCode" type="com:DebtorCodeType"/>
+    <xsd:element name="CreditLimit" type="AmountType"/>
+    <xsd:element name="DebtorBalance" type="AmountType"/>
+    <xsd:element name="SuspendedIndicator" type="com:YesNoType"/>
+    <xsd:element name="ClassCode" type="ClassCodeType"/>
+    <xsd:element name="CountryTotalBalance" type="AmountType"/>
+	<xsd:element name="TotalApprovedCCMAmount" type="AmountType"/>
+	<xsd:element name="TotalPendingCCMAmount" type="AmountType"/>
+	<xsd:element name="DefaultPaymentTerm" type="DefaultPaymentTermType"/>
+	<xsd:element name="DefaultCreditTerms" type="DefaultCreditTermsType"/>
+	<xsd:element name="CreditLimitExpiryDate" type="xsd:date"/>
+	<xsd:element name="DoubtfulIndicator" type="com:YesNoType"/>
+    <xsd:element name="CurrencyCode" type="com:CurrencyCodeType"/>
+    <xsd:element name="MasterAccountCode" type="com:DebtorCodeType"/>
+    <xsd:element name="MasterAccountFlag" type="com:YesNoType"/>
+
+    <xsd:simpleType name="ClassCodeType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="2"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="DefaultPaymentTermType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="DefaultCreditTermsType">
+        <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="5"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="AmountType">
+        <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="22"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

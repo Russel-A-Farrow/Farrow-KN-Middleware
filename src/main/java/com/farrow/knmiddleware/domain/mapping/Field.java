@@ -2,8 +2,10 @@ package com.farrow.knmiddleware.domain.mapping;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,11 +13,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Field {
 	private List<Location> location;
 	private String fieldName;
 	private Integer size;
-	private Class<Object> type;
+	private Class<?> type;
+	
+	public Field (Location[] locations, String fieldName, Integer size, Class<?>type) {
+		this(Arrays.asList(locations),fieldName,size,type);
+	}
+	
 	public Object parse(String value) {
 		if(type.equals(String.class)) {
 			return value;

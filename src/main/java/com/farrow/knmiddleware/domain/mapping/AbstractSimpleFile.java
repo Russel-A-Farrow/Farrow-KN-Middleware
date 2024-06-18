@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public abstract class AbstractSimpleFile {	
 	private List<Location> location;
-	private Class<Object> rootType;
+	private Class<?> rootType;
 	private List<Field> fields;
 }

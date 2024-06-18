@@ -13,7 +13,7 @@ import lombok.Setter;
 public class ComplexFileDefinition{
 	private Map<String,AbstractSimpleFile> rowTypes;
 	private Map<String,List<Integer>> rowIDFields;
-	private Class<Object> rootType;
+	private Class<?> rootType;
 	private Integer typeFieldSize;
 	private String typeResetValue;
 }
