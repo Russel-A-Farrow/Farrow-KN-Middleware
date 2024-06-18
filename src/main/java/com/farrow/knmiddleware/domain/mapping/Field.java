@@ -2,6 +2,7 @@ package com.farrow.knmiddleware.domain.mapping;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +37,9 @@ public class Field {
 		}
 		else if(type.equals(Double.class)){
 			return Double.parseDouble(value);
+		}
+		else if(type.equals(BigDecimal.class)){
+			return new BigDecimal(value);
 		}
 		else {
 			try {

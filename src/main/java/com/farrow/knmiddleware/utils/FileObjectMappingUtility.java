@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,14 +30,14 @@ public class FileObjectMappingUtility {
 	
 	public List<Object> getObjectFromComplexFile(InputStream fileIs, ComplexFileDefinition file) throws IOException {
 		List<Object> list = new ArrayList<>();
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String,Object> map = new HashMap<>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fileIs));
 		String line = null;
 		while ((line = reader.readLine())!=null) {
 			String type = line.substring(0, file.getTypeFieldSize());
 			if(file.getTypeResetValue()!=null && type==file.getTypeResetValue()) {
 				list.add(mapper.convertValue(map, file.getRootType()));
-				map = new HashMap<String,Object>();
+				map = new HashMap<>();
 			}
 			Object value = mapLine(line,file.getRowTypes().get(type));
 			addToMapLocation(value, file.getRowTypes().get(type).getLocation(), map);
@@ -58,10 +59,10 @@ public class FileObjectMappingUtility {
 	}
 	
 	private void addToMapLocation(Object value, List<Location> location, Map<String,Object> map) {
-		if(location==null || location.size()==0) {
+		if(location==null || location.isEmpty()) {
 			throw new UnsupportedOperationException("Location not defined");
 		}
-		if(location.get(0).getProp()!=DO_NOT_MAP) {
+		if(!Objects.equals(location.get(0).getProp(), DO_NOT_MAP)) {
 			Map<String,Object> currentMap = map;
 			for(int i=0;i<location.size();i++) {
 				String prop=location.get(i).getProp();
@@ -101,7 +102,7 @@ public class FileObjectMappingUtility {
 	}
 	
 	private Object mapDelimitedLine(String line, DelimitedFileDefinition def){		
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String,Object> map = new HashMap<>();
 		List<String> tempFields =  Arrays.asList(line.split(def.getDelimiter()));
 		if(def.getFields().size()!=tempFields.size()) {
 			throw new UnsupportedOperationException("Definition field size doesn't match actual field size");
@@ -117,7 +118,7 @@ public class FileObjectMappingUtility {
 
 
 	private Object mapFlatFileLine(String line, FlatFileDefinition def){
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String,Object> map = new HashMap<>();
 		Integer startPos = 0;
 		for(int i=0;i<def.getFields().size();i++) {
 			Field field = def.getFields().get(i);
@@ -129,12 +130,10 @@ public class FileObjectMappingUtility {
 	}
 	
 	private Object mapLine(String line, AbstractSimpleFile def) {
-		if(def instanceof DelimitedFileDefinition) {
-			DelimitedFileDefinition ddef = (DelimitedFileDefinition)def;
+		if(def instanceof DelimitedFileDefinition ddef) {
 			return mapDelimitedLine(line,ddef);
 		}
-		else if(def instanceof FlatFileDefinition) {
-			FlatFileDefinition fdef = (FlatFileDefinition)def;
+		else if(def instanceof FlatFileDefinition fdef) {
 			return mapFlatFileLine(line,fdef);
 		}
 		else {
