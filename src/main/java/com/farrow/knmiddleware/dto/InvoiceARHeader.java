@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import io.swagger.v3.oas.models.media.XML;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class InvoiceARHeader {
 	private String companyCode;
 	private String generatedFrom;
 	private String debtorCode;
+	private String abbreviatedName;
 	private String itemType;
 	private String itemNumber;
 	private XMLGregorianCalendar itemDate;
@@ -30,17 +32,38 @@ public class InvoiceARHeader {
 	private BigDecimal vatLcAmount;
 	private BigDecimal vatFcAmount;
 	private String cashInvoiceInd;
+	private String statutoryInvoiceNumber;
+	private String documentId;
+	private String nobo;
+	private String acronNewBranchCode;
+	private String acronNewCentrerCode;
 	private String itemParticular;
+	private String policyNumber;
+	private String endorsementNumber;
+	private String insurerClass;
+	private String insurerCode;
+	private XMLGregorianCalendar nacoraItemEffectiveDate;
+	private XMLGregorianCalendar nacoraItemExpiryDate;
 	private String clientId;
+	private String serviceDate;
+	private String branchReference;
+	private String a2kTransactionNumber;
+	private String a2rNumber;
+	private String businessKey;
+	private String itemPrefixCode;
 	private String itemParticular2;
 	private String itemParticular3;
 	private String itemParticular4;
+	private BigDecimal withholdingTaxAmount;
+	private BigDecimal withholdingVatAmount;
+	private String manualItemOnlyFlag;
 	private BigDecimal vatSubtotalFcAmount;
 	private BigDecimal vatSubtotalVatableLcAmount;
 	private BigDecimal vatSubtotalLcAmount;
 	private BigDecimal vatSubtotalPercentage;
 	private String subtotalVatCode;
 	private String originalDocumentNumber;
+	private String placeOfSupply;
 	
 	private List<InvoiceARLine> invoiceARLines = new ArrayList<>();
 }
