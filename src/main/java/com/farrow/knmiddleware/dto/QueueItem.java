@@ -20,6 +20,4 @@ public class QueueItem {
 	private String transmissionRunOn;
 	private LocalDateTime transmissionStarted;
 	private LocalDateTime transmissionCompleted;
-
-
 }
