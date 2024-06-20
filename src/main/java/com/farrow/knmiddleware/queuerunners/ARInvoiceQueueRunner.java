@@ -86,6 +86,8 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 		AS400_MAP = new ComplexFileDefinition();
 		AS400_MAP.addRowType("HDR",file);
 		AS400_MAP.addRowType("DTL", dtlfile);
+		AS400_MAP.setTypeResetValue("HDR");
+		AS400_MAP.setTypeFieldSize(3);
 		
 	}
 	
