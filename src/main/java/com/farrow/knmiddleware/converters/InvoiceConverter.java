@@ -11,7 +11,6 @@ import com.kn.services.kninvoiceheader.YesNoType;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.BillingReferenceLineType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.BillingReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.DocumentReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.ExchangeRateType;
@@ -47,10 +46,10 @@ import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_2.UBLE
 import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
 import oasis.names.specification.ubl.schema.xsd.invoice_2.ObjectFactory;
 
-@Component("InvoiceConverter")
+@Component("invoiceConverter")
 public class InvoiceConverter extends KNObjectConverter<InvoiceType,InvoiceARHeader> {
 	
-	public InvoiceConverter () throws JAXBException {
+	public InvoiceConverter() throws JAXBException {
 		super(JAXBContext.newInstance(InvoiceType.class,InvoiceHeaderInfo.class));
 	}
 	

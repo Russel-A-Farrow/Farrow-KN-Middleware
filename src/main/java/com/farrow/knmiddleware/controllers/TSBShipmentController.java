@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.farrow.knmiddleware.dto.TSBShipmentDetails;
+import com.farrow.knmiddleware.dto.ShipmentDetailsDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,7 +23,7 @@ public class TSBShipmentController {
 	private ObjectMapper mapper;
 	
 	@PostMapping(value = "/shipments")
-	public ResponseEntity<String> postShipmentDetails(@RequestBody TSBShipmentDetails tsbShipmentDetails) throws JsonProcessingException {
+	public ResponseEntity<String> postShipmentDetails(@RequestBody ShipmentDetailsDTO tsbShipmentDetails) throws JsonProcessingException {
 		logger.info("TSB Shipment Details: {}", mapper.writeValueAsString(tsbShipmentDetails));
 		
 		

@@ -7,7 +7,6 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.PropertyException;
 
 public abstract class KNObjectConverter<T,F> {
 	
@@ -28,7 +27,7 @@ public abstract class KNObjectConverter<T,F> {
 	public abstract JAXBElement<T> createObject(T input);
 	
 	
-	public byte[] generateXml(T input) throws PropertyException, JAXBException, IOException{
+	public byte[] generateXml(T input) throws JAXBException, IOException{
 		try(ByteArrayOutputStream bos = new ByteArrayOutputStream()){
 			JAXBElement<T> jAXBElement = createObject(input);
 			marshaller.marshal(jAXBElement, bos);
