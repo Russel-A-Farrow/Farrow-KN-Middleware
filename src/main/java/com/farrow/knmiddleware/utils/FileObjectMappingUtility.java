@@ -1,7 +1,6 @@
 package com.farrow.knmiddleware.utils;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class FileObjectMappingUtility {
 	public static final String DO_NOT_MAP = "^DONOTMAP^";
 	@Autowired private ObjectMapper mapper;
 	
-	public List<Object> getObjectFromComplexFile(InputStream fileIs, ComplexFileDefinition file) throws IOException {
+	public List<Object> getObjectFromComplexFile(InputStream fileIs, ComplexFileDefinition file) throws Exception {
 		List<Object> list = new ArrayList<>();
 		Map<String,Object> map = new HashMap<>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fileIs));
@@ -47,7 +46,7 @@ public class FileObjectMappingUtility {
 		return list;
 	}
 	
-	public List<Object> getObjectFromSimpleFile(InputStream fileIs, AbstractSimpleFile file) throws IOException {
+	public List<Object> getObjectFromSimpleFile(InputStream fileIs, AbstractSimpleFile file) throws Exception {
 		List<Object> list = new ArrayList<>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fileIs));
 		String line = null;
@@ -101,7 +100,7 @@ public class FileObjectMappingUtility {
 		
 	}
 	
-	private Object mapDelimitedLine(String line, DelimitedFileDefinition def){		
+	private Object mapDelimitedLine(String line, DelimitedFileDefinition def) throws Exception{		
 		Map<String,Object> map = new HashMap<>();
 		List<String> tempFields =  Arrays.asList(line.split(def.getDelimiter()));
 		if(def.getFields().size()!=tempFields.size()) {
@@ -117,7 +116,7 @@ public class FileObjectMappingUtility {
 	
 
 
-	private Object mapFlatFileLine(String line, FlatFileDefinition def){
+	private Object mapFlatFileLine(String line, FlatFileDefinition def) throws Exception{
 		Map<String,Object> map = new HashMap<>();
 		Integer startPos = 0;
 		for(int i=0;i<def.getFields().size();i++) {
@@ -129,7 +128,7 @@ public class FileObjectMappingUtility {
 		return mapper.convertValue(map, def.getRootType());
 	}
 	
-	private Object mapLine(String line, AbstractSimpleFile def) {
+	private Object mapLine(String line, AbstractSimpleFile def) throws Exception {
 		if(def instanceof DelimitedFileDefinition ddef) {
 			return mapDelimitedLine(line,ddef);
 		}

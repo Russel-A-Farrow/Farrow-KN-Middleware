@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import io.swagger.v3.oas.models.media.XML;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

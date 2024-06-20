@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +28,7 @@ public class Field {
 		this(Arrays.asList(locations),fieldName,size,type);
 	}
 	
-	public Object parse(String value) {
+	public Object parse(String value)  throws Exception {
 		if(type.equals(String.class)) {
 			return value;
 		}
@@ -40,6 +43,9 @@ public class Field {
 		}
 		else if(type.equals(BigDecimal.class)){
 			return new BigDecimal(value);
+		}
+		else if(type.equals(XMLGregorianCalendar.class)) {
+			return DatatypeFactory.newInstance().newXMLGregorianCalendar(value);
 		}
 		else {
 			try {

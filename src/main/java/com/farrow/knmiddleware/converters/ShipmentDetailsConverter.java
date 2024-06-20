@@ -1,5 +1,7 @@
 package com.farrow.knmiddleware.converters;
 
+import javax.xml.namespace.QName;
+
 import org.springframework.stereotype.Component;
 
 import com.farrow.knmiddleware.dto.KNObjectConverter;
@@ -15,8 +17,10 @@ import jakarta.xml.bind.JAXBException;
 @Component("shipmentDetailsConverter")
 public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,ShipmentDetailsDTO> {
 	
+	private static final QName _ShipmentDetails_QNAME = new QName("http://services.kn.com/xsd/acon/fsl/ShipmentDetails/v1", "ShipmentDetails");
+	
 	public ShipmentDetailsConverter() throws JAXBException {
-		super(JAXBContext.newInstance(ShipmentDetails.class));
+		super(JAXBContext.newInstance(ShipmentDetails.class, ShipmentDetailType.class));
 	}
 	
 	@Override
@@ -110,8 +114,8 @@ public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,
 	}
 
 	@Override
-	public JAXBElement<ShipmentDetails> createObject(ShipmentDetails input) {
-		return null;
+	public JAXBElement<ShipmentDetails> createObject(ShipmentDetails value) {
+		return new JAXBElement<>(_ShipmentDetails_QNAME, ShipmentDetails.class, null, value);
 	}
 
 }
