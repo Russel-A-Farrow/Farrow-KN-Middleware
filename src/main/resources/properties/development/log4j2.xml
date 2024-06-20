@@ -3,7 +3,7 @@
 	<Appenders>
 		<!-- <SMTP name="Mail" subject="KN API"
 			to=""
-			from="knadapter@farrow.com" smtpHost="smtp.farrow.com"
+			from="knmiddleware@farrow.com" smtpHost="smtp.farrow.com"
 			smtpPassword="welcome" smtpProtocol="smtp" smtpPort="25" bufferSize="1">
 		</SMTP> -->
 		<Console name="Console" target="SYSTEM_OUT">
@@ -11,8 +11,8 @@
 				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} () - %msg%n" />
 		</Console>
 		<RollingRandomAccessFile name="RollingRandomAccessFile"
-			fileName="${sys:user.home}/logs/farrow_knadapter_logs/farrow_knadapter.log"
-			filePattern="${sys:user.home}/logs/farrow_knadapter_logs/$${date:yyyy-MM}/farrow_knadapter-%d{MM-dd-yyyy}-%i.log.gz">
+			fileName="${sys:user.home}/logs/farrow_knmiddleware_logs/farrow_knmiddleware.log"
+			filePattern="${sys:user.home}/logs/farrow_knmiddleware_logs/$${date:yyyy-MM}/farrow_knmiddleware-%d{MM-dd-yyyy}-%i.log.gz">
 			<PatternLayout>
 				<Pattern>%d %p %c{1.}:%L [%t] %m%n</Pattern>
 			</PatternLayout>
@@ -21,7 +21,7 @@
 				<SizeBasedTriggeringPolicy size="30MB" />
 			</Policies>
             <DefaultRolloverStrategy max="100">
-				<Delete basePath="${sys:user.home}/logs/farrow_knadapter_logs/" maxDepth="10">
+				<Delete basePath="${sys:user.home}/logs/farrow_knmiddleware_logs/" maxDepth="10">
 					<!-- Delete all files older than 30 days -->
 					<IfLastModified age="90d" />
 				</Delete>
