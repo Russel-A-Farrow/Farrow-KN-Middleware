@@ -12,14 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zaxxer.hikari.HikariDataSource;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import net.javacrumbs.shedlock.core.DefaultLockingTaskExecutor;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.core.LockingTaskExecutor;
@@ -46,6 +55,39 @@ public class ResourceConfig {
 		return ds;
 	}
 
+	
+	@Bean(name = "entityManager")
+	@Primary
+	EntityManager farrowReaderEntityManagerFssbfd() {
+		return farrowEntityManagerFactoryFssbfd().createEntityManager();
+	}
+
+	@Bean(name = "entityManagerFactory")
+	@Primary
+	EntityManagerFactory farrowEntityManagerFactoryFssbfd() {
+		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
+		lef.setDataSource(dataSource());
+		lef.setJpaVendorAdapter(farrowReaderJpaVendorAdapterFssbfd());
+		lef.setPackagesToScan("com.farrow.imagingapi.*");
+		lef.setPersistenceUnitName("FSSBFD");
+		lef.afterPropertiesSet();
+		return lef.getObject();
+	}
+
+	@Bean(name = "transactionManager")
+	@Primary
+	PlatformTransactionManager farrowReaderTransactionManagerCdn() {
+		return new JpaTransactionManager(farrowEntityManagerFactoryFssbfd());
+	}
+
+	public JpaVendorAdapter farrowReaderJpaVendorAdapterFssbfd() {
+		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+		jpaVendorAdapter.setShowSql(false);
+		jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.DB2Dialect");
+		jpaVendorAdapter.setDatabase(Database.DB2);
+		return jpaVendorAdapter;
+	}
+	
 	@Bean("knadapterShedLockProvider")
 	LockProvider lockProvider() {
 		return new JdbcTemplateLockProvider(JdbcTemplateLockProvider.Configuration.builder()
