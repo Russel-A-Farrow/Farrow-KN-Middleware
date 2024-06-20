@@ -54,39 +54,6 @@ public class ResourceConfig {
 		ds.setMaxLifetime(MINUTES.toMillis(5));
 		return ds;
 	}
-
-	
-	@Bean(name = "entityManager")
-	@Primary
-	EntityManager farrowReaderEntityManagerFssbfd() {
-		return farrowEntityManagerFactoryFssbfd().createEntityManager();
-	}
-
-	@Bean(name = "entityManagerFactory")
-	@Primary
-	EntityManagerFactory farrowEntityManagerFactoryFssbfd() {
-		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
-		lef.setDataSource(dataSource());
-		lef.setJpaVendorAdapter(farrowReaderJpaVendorAdapterFssbfd());
-		lef.setPackagesToScan("com.farrow.imagingapi.*");
-		lef.setPersistenceUnitName("FSSBFD");
-		lef.afterPropertiesSet();
-		return lef.getObject();
-	}
-
-	@Bean(name = "transactionManager")
-	@Primary
-	PlatformTransactionManager farrowReaderTransactionManagerCdn() {
-		return new JpaTransactionManager(farrowEntityManagerFactoryFssbfd());
-	}
-
-	public JpaVendorAdapter farrowReaderJpaVendorAdapterFssbfd() {
-		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-		jpaVendorAdapter.setShowSql(false);
-		jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.DB2Dialect");
-		jpaVendorAdapter.setDatabase(Database.DB2);
-		return jpaVendorAdapter;
-	}
 	
 	@Bean("knadapterShedLockProvider")
 	LockProvider lockProvider() {
