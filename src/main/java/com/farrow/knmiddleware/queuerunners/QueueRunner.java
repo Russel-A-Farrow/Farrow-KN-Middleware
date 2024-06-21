@@ -1,6 +1,9 @@
 package com.farrow.knmiddleware.queuerunners;
 
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.farrow.knmiddleware.daos.jdbc.QueueDaoJdbc;
 import com.farrow.knmiddleware.dto.DataType;
@@ -15,6 +18,13 @@ public abstract class QueueRunner {
 	@Autowired protected FileObjectMappingUtility fileMapper;
 	
 	@Autowired protected QueueDaoJdbc queueDao;
+	
+	@Value("${knsftphost}")	protected String sftpHost;
+	@Value("${knsftpuser}")	protected String sftpUser;
+	@Value("${knsftppass}")	protected String sftpPass;
+	@Value("${knsftpport}")	protected String sftpPort;
+	
+	protected static final DateTimeFormatter FILEDATEFORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 	
 	public abstract DataType getType();
 	

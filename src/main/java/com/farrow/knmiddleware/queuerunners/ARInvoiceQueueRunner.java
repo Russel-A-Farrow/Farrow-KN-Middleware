@@ -1,7 +1,9 @@
 package com.farrow.knmiddleware.queuerunners;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +25,8 @@ import com.farrow.knmiddleware.dto.QueueItem;
 import com.farrow.knmiddleware.dto.SourceSystem;
 import com.farrow.knmiddleware.exceptions.UnsupportedSourceSystemException;
 import com.farrow.knmiddleware.utils.FileObjectMappingUtility;
+import com.farrow.knmiddleware.utils.SFTPUtility;
+import com.jcraft.jsch.Session;
 
 import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
 
@@ -138,8 +142,18 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 
 	@Override
 	public void transmitData(QueueItem item) throws Exception {
-		// TODO Auto-generated method stub
-
+		Session sftp = null;
+		try(InputStream is = new ByteArrayInputStream(item.getOutputXml().getFile())){
+			sftp = SFTPUtility.getSession(sftpHost,sftpUser, sftpPass, Integer.parseInt(sftpPort));
+			String filename = item.getSourceSystem().toString()+item.getDataType().toString()+LocalDateTime.now().format(FILEDATEFORMAT)+(item.getId()%100);
+			SFTPUtility.uploadFile(sftp, is, "/pub/inbound/ar", filename);
+		}
+		finally {
+			if(sftp!=null) {
+				SFTPUtility.disconnectSession(sftp);
+			}
+		}
+		
 	}
 
 }
