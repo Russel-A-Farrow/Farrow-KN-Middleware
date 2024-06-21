@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +18,6 @@ import com.farrow.knmiddleware.converters.InvoiceConverter;
 import com.farrow.knmiddleware.domain.mapping.Field;
 import com.farrow.knmiddleware.domain.mapping.FlatFileDefinition;
 import com.farrow.knmiddleware.domain.mapping.Location;
-import com.farrow.knmiddleware.dto.FarrowDate;
 import com.farrow.knmiddleware.dto.InvoiceARHeader;
 import com.farrow.knmiddleware.dto.InvoiceARLine;
 import com.farrow.knmiddleware.utils.FileObjectMappingUtility;
@@ -41,8 +42,8 @@ public class MappingTest {
 		fields.add(new Field(new Location[]{new Location("debtorCode")},"Debtor Code",10,String.class));
 		fields.add(new Field(new Location[]{new Location("itemType")},"Item Type",1,String.class));
 		fields.add(new Field(new Location[]{new Location("itemNumber")},"Item No.",20,String.class));
-		fields.add(new Field(new Location[]{new Location("itemDate")},"Item Date",10,FarrowDate.class));
-		fields.add(new Field(new Location[]{new Location("itemDueDate")},"Due Date",10,FarrowDate.class));
+		fields.add(new Field(new Location[]{new Location("itemDate")},"Item Date",10,XMLGregorianCalendar.class));
+		fields.add(new Field(new Location[]{new Location("itemDueDate")},"Due Date",10,XMLGregorianCalendar.class));
 		fields.add(new Field(new Location[]{new Location("itemCurrencyCode")},"Item Currency Code",3,String.class));
 		fields.add(new Field(new Location[]{new Location("foreignCurrencyDecimialPlace")},"Foreign Currency Decimal Place",1,String.class));
 		fields.add(new Field(new Location[]{new Location("localCurrencyDecimialPlace")},"Local Currency Decimal Place",1,String.class));

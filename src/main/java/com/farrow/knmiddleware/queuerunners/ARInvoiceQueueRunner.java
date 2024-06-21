@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.farrow.knmiddleware.converters.InvoiceConverter;
@@ -14,7 +16,6 @@ import com.farrow.knmiddleware.domain.mapping.Field;
 import com.farrow.knmiddleware.domain.mapping.FlatFileDefinition;
 import com.farrow.knmiddleware.domain.mapping.Location;
 import com.farrow.knmiddleware.dto.DataType;
-import com.farrow.knmiddleware.dto.FarrowDate;
 import com.farrow.knmiddleware.dto.InvoiceARHeader;
 import com.farrow.knmiddleware.dto.InvoiceARLine;
 import com.farrow.knmiddleware.dto.QueueFile;
@@ -32,15 +33,15 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 	private static final ComplexFileDefinition AS400_MAP ;
 	static {
 		FlatFileDefinition file = new FlatFileDefinition();
-		List<Field> fields = new ArrayList<Field>();
+		List<Field> fields = new ArrayList<>();
 		fields.add(new Field(new Location[]{new Location(FileObjectMappingUtility.DO_NOT_MAP)},"Record ID",3,String.class));
 		fields.add(new Field(new Location[]{new Location("companyCode")},"Company Code",4,String.class));
 		fields.add(new Field(new Location[]{new Location("generatedFrom")},"Generated From",8,String.class));
 		fields.add(new Field(new Location[]{new Location("debtorCode")},"Debtor Code",10,String.class));
 		fields.add(new Field(new Location[]{new Location("itemType")},"Item Type",1,String.class));
 		fields.add(new Field(new Location[]{new Location("itemNumber")},"Item No.",20,String.class));
-		fields.add(new Field(new Location[]{new Location("itemDate")},"Item Date",10,FarrowDate.class));
-		fields.add(new Field(new Location[]{new Location("itemDueDate")},"Due Date",10,FarrowDate.class));
+		fields.add(new Field(new Location[]{new Location("itemDate")},"Item Date",10,XMLGregorianCalendar.class));
+		fields.add(new Field(new Location[]{new Location("itemDueDate")},"Due Date",10,XMLGregorianCalendar.class));
 		fields.add(new Field(new Location[]{new Location("itemCurrencyCode")},"Item Currency Code",3,String.class));
 		fields.add(new Field(new Location[]{new Location("foreignCurrencyDecimialPlace")},"Foreign Currency Decimal Place",1,String.class));
 		fields.add(new Field(new Location[]{new Location("localCurrencyDecimialPlace")},"Local Currency Decimal Place",1,String.class));
@@ -65,7 +66,7 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 		file.setRootType(InvoiceARHeader.class);
 		
 		FlatFileDefinition dtlfile = new FlatFileDefinition();
-		List<Field> dtlfields = new ArrayList<Field>();
+		List<Field> dtlfields = new ArrayList<>();
 		dtlfields.add(new Field(new Location[]{new Location(FileObjectMappingUtility.DO_NOT_MAP)},"Record ID",3,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("sequenceNumber")},"Sequence No.",6,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeCode")},"Charge Code",4,String.class));
@@ -85,7 +86,7 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 		dtlfields.add(new Field(new Location[]{new Location("customerReference")},"Customer Reference",150,String.class));
 		dtlfile.setFields(dtlfields);
 		dtlfile.setRootType(InvoiceARLine.class);
-		dtlfile.setLocation(Arrays.asList(new Location[]{new Location("invoiceARLines")}));
+		dtlfile.setLocation(Arrays.asList(new Location("invoiceARLines")));
 		
 		
 		AS400_MAP = new ComplexFileDefinition();
