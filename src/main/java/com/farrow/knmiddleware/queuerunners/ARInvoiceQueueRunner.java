@@ -1,5 +1,6 @@
 package com.farrow.knmiddleware.queuerunners;
 
+import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +17,13 @@ import com.farrow.knmiddleware.dto.DataType;
 import com.farrow.knmiddleware.dto.FarrowDate;
 import com.farrow.knmiddleware.dto.InvoiceARHeader;
 import com.farrow.knmiddleware.dto.InvoiceARLine;
+import com.farrow.knmiddleware.dto.QueueFile;
 import com.farrow.knmiddleware.dto.QueueItem;
+import com.farrow.knmiddleware.dto.SourceSystem;
+import com.farrow.knmiddleware.exceptions.UnsupportedSourceSystemException;
 import com.farrow.knmiddleware.utils.FileObjectMappingUtility;
+
+import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
 
 public class ARInvoiceQueueRunner extends QueueRunner {
 
@@ -92,17 +98,45 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 	
 	@Override
 	public DataType getType() {
-		return DataType.ARInvoice;
+		return DataType.AR;
 	}
 
 	@Override
-	public void convertData(QueueItem item) {
-		// TODO Auto-generated method stub
-
+	public void convertData(QueueItem item) throws Exception {
+		if(SourceSystem.TSB_AS400.equals(item.getSourceSystem())) {
+			try(ByteArrayInputStream bis = new ByteArrayInputStream(item.getInputFile().getFile())){
+				List<Object> invoiceHeaders = fileMapper.getObjectFromComplexFile(bis, AS400_MAP);
+				if(invoiceHeaders.size()>1) {
+					throw new Exception("Too many invoices in record");
+				}
+				InvoiceARHeader arHeader = (InvoiceARHeader)invoiceHeaders.get(0);
+				byte[] objectFile = mapper.writeValueAsBytes(arHeader);
+				QueueFile objectQueueFile = new QueueFile();
+				objectQueueFile.setFile(objectFile);
+				item.setObjectFile(objectQueueFile);
+				queueDao.saveObjectFile(item.getId(),item.getObjectFile());
+				InvoiceType invoice = invoiceConverter.convertToKNObject(arHeader);
+				byte[] xmlFile = invoiceConverter.generateXml(invoice);
+				QueueFile xmlQueueFile = new QueueFile();
+				xmlQueueFile.setFile(xmlFile);
+				item.setOutputXml(xmlQueueFile);
+				queueDao.saveOutputFile(item.getId(),item.getOutputXml());
+			}
+			
+		}
+		else if(SourceSystem.TM.equals(item.getSourceSystem())) {
+			//TODO
+		}
+		else if(SourceSystem.PL.equals(item.getSourceSystem())) {
+			//TODO
+		}
+		else {
+			throw new UnsupportedSourceSystemException(item.getSourceSystem()+" is unsupported for "+item.getDataType());
+		}
 	}
 
 	@Override
-	public void transmitData(QueueItem item) {
+	public void transmitData(QueueItem item) throws Exception {
 		// TODO Auto-generated method stub
 
 	}

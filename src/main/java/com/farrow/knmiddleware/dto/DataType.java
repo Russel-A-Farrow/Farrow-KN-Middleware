@@ -1,5 +1,5 @@
 package com.farrow.knmiddleware.dto;
 
 public enum DataType {
-	ARInvoice
+	AR,AP,ARINTEGRITY,ACCRUAL,EXPECTEDGP,FSLINTEGRITY,FT,SHIPMENT,LTI
 }

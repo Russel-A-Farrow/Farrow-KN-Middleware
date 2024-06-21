@@ -1,5 +1,5 @@
 package com.farrow.knmiddleware.dto;
 
 public enum SourceSystem {
-	TM,PL,TSBAS400
+	TM,PL,TSB,TSB_AS400
 }

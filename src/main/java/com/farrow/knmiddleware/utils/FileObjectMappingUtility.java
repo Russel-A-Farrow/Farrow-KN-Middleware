@@ -35,7 +35,7 @@ public class FileObjectMappingUtility {
 		String line = null;
 		while ((line = reader.readLine())!=null) {
 			String type = line.substring(0, file.getTypeFieldSize());
-			if(file.getTypeResetValue()!=null && type==file.getTypeResetValue()) {
+			if(list.size()>0 &&file.getTypeResetValue()!=null && type==file.getTypeResetValue()) {
 				list.add(mapper.convertValue(map, file.getRootType()));
 				map = new HashMap<>();
 			}
