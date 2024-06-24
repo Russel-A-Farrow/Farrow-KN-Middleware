@@ -108,7 +108,7 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 
 	@Override
 	public void convertData(QueueItem item) throws Exception {
-		if(SourceSystem.TSB_AS400.equals(item.getSourceSystem())) {
+		if(SourceSystem.TSBAS400.equals(item.getSourceSystem())) {
 			try(ByteArrayInputStream bis = new ByteArrayInputStream(item.getInputFile().getFile())){
 				List<Object> invoiceHeaders = fileMapper.getObjectFromComplexFile(bis, AS400_MAP);
 				if(invoiceHeaders.size()>1) {

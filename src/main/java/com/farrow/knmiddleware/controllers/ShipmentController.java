@@ -19,10 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.xml.bind.JAXBException;
 
 @RestController
-@RequestMapping("/tsb")
-public class TSBShipmentController {
+@RequestMapping("/shipments")
+public class ShipmentController {
 	
-	private final Logger logger = LogManager.getLogger(TSBShipmentController.class);
+	private final Logger logger = LogManager.getLogger(ShipmentController.class);
 	
 	@Autowired
 	private ObjectMapper mapper;
@@ -30,7 +30,7 @@ public class TSBShipmentController {
 	@Autowired
 	private ShipmentDetailsConverter shipmentDetailsConverter;
 	
-	@PostMapping(value = "/shipments")
+	@PostMapping(value = "/tsb")
 	public ResponseEntity<String> postShipmentDetails(@RequestBody ShipmentDetailsDTO tsbShipmentDetails) throws JAXBException, IOException {
 		logger.info("TSB Shipment Details: {}", mapper.writeValueAsString(tsbShipmentDetails));
 		
