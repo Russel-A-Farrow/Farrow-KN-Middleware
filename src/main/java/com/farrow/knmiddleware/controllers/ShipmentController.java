@@ -1,7 +1,7 @@
 package com.farrow.knmiddleware.controllers;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.farrow.knmiddleware.converters.ShipmentDetailsConverter;
+import com.farrow.knmiddleware.daos.jdbc.QueueDaoJdbc;
+import com.farrow.knmiddleware.dto.DataType;
+import com.farrow.knmiddleware.dto.QueueFile;
+import com.farrow.knmiddleware.dto.QueueItem;
 import com.farrow.knmiddleware.dto.ShipmentDetailsDTO;
+import com.farrow.knmiddleware.dto.SourceSystem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.xml.bind.JAXBException;
@@ -30,13 +35,19 @@ public class ShipmentController {
 	@Autowired
 	private ShipmentDetailsConverter shipmentDetailsConverter;
 	
+	@Autowired private QueueDaoJdbc queueDao;
+	
 	@PostMapping(value = "/tsb")
-	public ResponseEntity<String> postShipmentDetails(@RequestBody ShipmentDetailsDTO tsbShipmentDetails) throws JAXBException, IOException {
-		logger.info("TSB Shipment Details: {}", mapper.writeValueAsString(tsbShipmentDetails));
+	public ResponseEntity<String> postShipmentDetails(@RequestBody ShipmentDetailsDTO tsbShipmentDetails) throws JAXBException, IOException, SQLException {
+		byte[] inputFile = mapper.writeValueAsBytes(tsbShipmentDetails);
+		QueueItem item = new QueueItem();
+		item.setDataType(DataType.SHIPMENT);
+		item.setSourceSystem(SourceSystem.TSB);
+		QueueFile file = new QueueFile();
+		file.setFile(inputFile);
+		item.setInputFile(file);
 		
-		logger.info(new String(shipmentDetailsConverter.generateXml(shipmentDetailsConverter.convertToKNObject(tsbShipmentDetails)),
-				StandardCharsets.UTF_8));
-		
-		return ResponseEntity.ok("success");		
+		Integer id = queueDao.saveNewQueueItem(item);
+		return ResponseEntity.ok("success-"+id);		
 	}
 }

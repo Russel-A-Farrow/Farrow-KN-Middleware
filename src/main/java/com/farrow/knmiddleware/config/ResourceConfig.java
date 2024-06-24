@@ -8,6 +8,7 @@ import java.util.TimeZone;
 
 import javax.sql.DataSource;
 
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +21,11 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.ws.transport.http.HttpComponents5MessageSender;
 
+import com.farrow.knmiddleware.soapclient.KNSoapClient;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -78,4 +82,24 @@ public class ResourceConfig {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		return mapper;
 	}
+	
+	@Bean
+	HttpComponents5MessageSender messageSender() {
+		HttpComponents5MessageSender messageSender = new HttpComponents5MessageSender();
+	    messageSender.setCredentials(new UsernamePasswordCredentials(env.getProperty("knwebservices.username"), env.getProperty("knwebservices.password").toCharArray()));
+	    return messageSender;
+	}
+	
+	@Bean
+	KNSoapClient soapClient() {
+		KNSoapClient client = new KNSoapClient();
+		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+	    marshaller.setContextPath("com.kn.services.xsd.acon.common.v1:com.kn.services.xsd.acon.invoice.invoiceservice.v1:kn._int.knesb.xsd.esb.audit.v01:kn._int.knesb.xsd.esb.routing.v1");
+	    client.setMarshaller(marshaller);
+	    client.setUnmarshaller(marshaller);
+	    
+	    client.setMessageSender(messageSender());
+	    return client;
+	}
+   
 }

@@ -149,18 +149,7 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 
 	@Override
 	public void transmitData(QueueItem item) throws Exception {
-		Session sftp = null;
-		try(InputStream is = new ByteArrayInputStream(item.getOutputXml().getFile())){
-			sftp = SFTPUtility.getSession(sftpHost,sftpUser, sftpPass, Integer.parseInt(sftpPort));
-			String filename = item.getSourceSystem().toString()+item.getDataType().toString()+LocalDateTime.now().format(FILEDATEFORMAT)+(item.getId()%100);
-			SFTPUtility.uploadFile(sftp, is, "/pub/inbound/ar", filename);
-		}
-		finally {
-			if(sftp!=null) {
-				SFTPUtility.disconnectSession(sftp);
-			}
-		}
-		
+		genericTransmitData(item,"/pub/inbound/ar");		
 	}
 
 }
