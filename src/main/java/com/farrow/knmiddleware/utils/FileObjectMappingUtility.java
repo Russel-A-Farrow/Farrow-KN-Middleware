@@ -34,12 +34,18 @@ public class FileObjectMappingUtility {
 		String line = null;
 		while ((line = reader.readLine())!=null) {
 			String type = line.substring(0, file.getTypeFieldSize());
-			if(list.size()>0 &&file.getTypeResetValue()!=null && type==file.getTypeResetValue()) {
-				list.add(mapper.convertValue(map, file.getRootType()));
-				map = new HashMap<>();
+			if( file.getTypeResetValue()!=null && type.equals(file.getTypeResetValue())) {
+				if(list.size()>0) {
+					list.add(mapper.convertValue(map, file.getRootType()));
+					map = new HashMap<>();
+				}
+				map.putAll(mapLine(line,file.getRowTypes().get(type))); 
 			}
-			Object value = mapLine(line,file.getRowTypes().get(type));
-			addToMapLocation(value, file.getRowTypes().get(type).getLocation(), map);
+			else {
+				Map<String,Object> valueMap = mapLine(line,file.getRowTypes().get(type));
+				Object value = mapper.convertValue(valueMap, file.getRowTypes().get(type).getRootType());
+				addToMapLocation(value, file.getRowTypes().get(type).getLocation(), map);
+			}
 			
 		}
 		list.add(mapper.convertValue(map, file.getRootType()));
@@ -51,7 +57,7 @@ public class FileObjectMappingUtility {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fileIs));
 		String line = null;
 		while ((line = reader.readLine())!=null) {
-			Object value = mapLine(line,file);
+			Map<String,Object> value = mapLine(line,file);
 			list.add(mapper.convertValue(value, file.getRootType()));
 		}
 		return list;
@@ -100,7 +106,7 @@ public class FileObjectMappingUtility {
 		
 	}
 	
-	private Object mapDelimitedLine(String line, DelimitedFileDefinition def) throws Exception{		
+	private Map<String,Object> mapDelimitedLine(String line, DelimitedFileDefinition def) throws Exception{		
 		Map<String,Object> map = new HashMap<>();
 		List<String> tempFields =  Arrays.asList(line.split(def.getDelimiter()));
 		if(def.getFields().size()!=tempFields.size()) {
@@ -111,12 +117,12 @@ public class FileObjectMappingUtility {
 			Object value = field.parse(tempFields.get(i));
 			addToMapLocation(value,field.getLocation(),map);
 		}
-		return mapper.convertValue(map, def.getRootType());
+		return map;
 	}
 	
 
 
-	private Object mapFlatFileLine(String line, FlatFileDefinition def) throws Exception{
+	private Map<String,Object> mapFlatFileLine(String line, FlatFileDefinition def) throws Exception{
 		Map<String,Object> map = new HashMap<>();
 		Integer startPos = 0;
 		for(int i=0;i<def.getFields().size();i++) {
@@ -125,10 +131,10 @@ public class FileObjectMappingUtility {
 			startPos+=field.getSize();
 			addToMapLocation(value,field.getLocation(),map);
 		}
-		return mapper.convertValue(map, def.getRootType());
+		return map;
 	}
 	
-	private Object mapLine(String line, AbstractSimpleFile def) throws Exception {
+	private Map<String,Object> mapLine(String line, AbstractSimpleFile def) throws Exception {
 		if(def instanceof DelimitedFileDefinition ddef) {
 			return mapDelimitedLine(line,ddef);
 		}

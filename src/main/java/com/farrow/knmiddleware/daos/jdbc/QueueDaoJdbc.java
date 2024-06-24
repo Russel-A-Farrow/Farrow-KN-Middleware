@@ -40,7 +40,7 @@ public class QueueDaoJdbc extends AbstractFssbfdDaoJdbc{
 			String query = "insert into queue (sourceSystem ,dataType ,inputFileId ,objectFileId, outputXmlId) values (?,?,?,?,?)";
 			try (PreparedStatement stmt = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);) {
 				stmt.setString(1, item.getSourceSystem().toString());
-				stmt.setString(2, item.getSourceSystem().toString());
+				stmt.setString(2, item.getDataType().toString());
 				if(item.getInputFile()!=null) {
 					item.getInputFile().setId(saveInputFile(con,item.getInputFile()));
 					stmt.setInt(3, item.getInputFile().getId());
@@ -215,34 +215,40 @@ public class QueueDaoJdbc extends AbstractFssbfdDaoJdbc{
 							queueItem.setTransmissionCompleted(transmissionCompleted.toLocalDateTime());
 						}
 						Integer inputFileId = rs.getInt("inputFileId");
+						if(rs.wasNull()) {
+							inputFileId=null;
+						}
 						if(inputFileId != null) {
 							try(PreparedStatement inputFileStmt = con.prepareStatement("SELECT * FROM queueInputFile WHERE id = ?")){
 								inputFileStmt.setInt(1, inputFileId);
 								try(ResultSet rsInputFile = inputFileStmt.executeQuery()){
-									if(rs.next()) {
+									if(rsInputFile.next()) {
 										QueueFile inputFile = new QueueFile();
 										inputFile.setId(inputFileId);
-										inputFile.setCreated(rs.getTimestamp("created").toLocalDateTime());
-										inputFile.setFile(rs.getString("textcontent").getBytes(StandardCharsets.UTF_8));
+										inputFile.setCreated(rsInputFile.getTimestamp("created").toLocalDateTime());
+										inputFile.setFile(rsInputFile.getString("textcontent").getBytes(StandardCharsets.UTF_8));
 										queueItem.setInputFile(inputFile);
 									}
 									else {
-										throw new FileMissingException("Input file missing for "+queueItem.getId()+" input file id"+inputFileId);
+										throw new FileMissingException("Input file missing for "+queueItem.getId()+" input file id "+inputFileId);
 									}
 								}
 								
 							}
 						}
 						Integer objectFileId = rs.getInt("objectFileId");
+						if(rs.wasNull()) {
+							objectFileId=null;
+						}
 						if(objectFileId != null) {
 							try(PreparedStatement objectFileStmt = con.prepareStatement("SELECT * FROM queueObjectFile WHERE id = ?")){
 								objectFileStmt.setInt(1, objectFileId);
-								try(ResultSet rsInputFile = objectFileStmt.executeQuery()){
-									if(rs.next()) {
+								try(ResultSet rsObjectFile = objectFileStmt.executeQuery()){
+									if(rsObjectFile.next()) {
 										QueueFile objectFile = new QueueFile();
 										objectFile.setId(objectFileId);
-										objectFile.setCreated(rs.getTimestamp("created").toLocalDateTime());
-										objectFile.setFile(rs.getString("textcontent").getBytes(StandardCharsets.UTF_8));
+										objectFile.setCreated(rsObjectFile.getTimestamp("created").toLocalDateTime());
+										objectFile.setFile(rsObjectFile.getString("textcontent").getBytes(StandardCharsets.UTF_8));
 										queueItem.setObjectFile(objectFile);
 									}
 									else {
@@ -253,15 +259,18 @@ public class QueueDaoJdbc extends AbstractFssbfdDaoJdbc{
 							}
 						}
 						Integer outputXmlId = rs.getInt("outputXmlId");
+						if(rs.wasNull()) {
+							outputXmlId=null;
+						}
 						if(outputXmlId != null) {
 							try(PreparedStatement outputFileStmt = con.prepareStatement("SELECT * FROM queueOutputFile WHERE id = ?")){
 								outputFileStmt.setInt(1, outputXmlId);
-								try(ResultSet rsInputFile = outputFileStmt.executeQuery()){
-									if(rs.next()) {
+								try(ResultSet rsOutputFile = outputFileStmt.executeQuery()){
+									if(rsOutputFile.next()) {
 										QueueFile outputFile = new QueueFile();
 										outputFile.setId(outputXmlId);
-										outputFile.setCreated(rs.getTimestamp("created").toLocalDateTime());
-										outputFile.setFile(rs.getString("textcontent").getBytes(StandardCharsets.UTF_8));
+										outputFile.setCreated(rsOutputFile.getTimestamp("created").toLocalDateTime());
+										outputFile.setFile(rsOutputFile.getString("textcontent").getBytes(StandardCharsets.UTF_8));
 										queueItem.setOutputXml(outputFile);
 									}
 									else {

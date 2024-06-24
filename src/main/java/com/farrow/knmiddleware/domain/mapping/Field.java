@@ -9,6 +9,8 @@ import java.util.List;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,15 +24,25 @@ public class Field {
 	private List<Location> location;
 	private String fieldName;
 	private Integer size;
+	private Integer decimalPlaces;
 	private Class<?> type;
 	
+	
 	public Field (Location[] locations, String fieldName, Integer size, Class<?>type) {
-		this(Arrays.asList(locations),fieldName,size,type);
+		this(Arrays.asList(locations),fieldName,size,null,type);
+	}
+	
+	public Field (Location[] locations, String fieldName, Integer size, Integer decimal, Class<?>type) {
+		this(Arrays.asList(locations),fieldName,size,decimal,type);
 	}
 	
 	public Object parse(String value)  throws Exception {
+		if(decimalPlaces!=null) {
+			value = value.substring(0,size-decimalPlaces) + '.' + value.substring(size-decimalPlaces);
+		}
+		
 		if(type.equals(String.class)) {
-			return value;
+			return StringUtils.trim(value);
 		}
 		else if(type.equals(Integer.class)) {
 			return Integer.parseInt(value);

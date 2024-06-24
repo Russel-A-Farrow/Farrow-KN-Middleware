@@ -26,6 +26,10 @@ public class InvoiceARLine {
 	private BigDecimal vatPercentage;
 	private BigDecimal chargeLineVatLcAmount;
 	private BigDecimal chargeLineVatFcAmount;
+	private String vatCode2;
+	private BigDecimal vatPercentage2;
+	private BigDecimal chargeLineVatLcAmount2;
+	private BigDecimal chargeLineVatFcAmount2;
 	private String billingCompletedIndicator;
 	private String creditRequestNumber;
 	private String chargeLineRemarks;

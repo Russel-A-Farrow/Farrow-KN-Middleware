@@ -52,7 +52,7 @@ public class ARController {
 		}
 	}
 	
-	@PostMapping("/as400test")
+	@PostMapping("/as400")
 	public void receiveAs400ARPayLoad(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);

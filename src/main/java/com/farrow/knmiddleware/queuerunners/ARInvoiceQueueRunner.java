@@ -11,6 +11,7 @@ import java.util.List;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.farrow.knmiddleware.converters.InvoiceConverter;
 import com.farrow.knmiddleware.domain.mapping.ComplexFileDefinition;
@@ -30,11 +31,12 @@ import com.jcraft.jsch.Session;
 
 import oasis.names.specification.ubl.schema.xsd.invoice_2.InvoiceType;
 
+@Component
 public class ARInvoiceQueueRunner extends QueueRunner {
 
 	@Autowired private InvoiceConverter invoiceConverter;
 	
-	private static final ComplexFileDefinition AS400_MAP ;
+	public static final ComplexFileDefinition AS400_MAP ;
 	static {
 		FlatFileDefinition file = new FlatFileDefinition();
 		List<Field> fields = new ArrayList<>();
@@ -49,7 +51,7 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 		fields.add(new Field(new Location[]{new Location("itemCurrencyCode")},"Item Currency Code",3,String.class));
 		fields.add(new Field(new Location[]{new Location("foreignCurrencyDecimialPlace")},"Foreign Currency Decimal Place",1,String.class));
 		fields.add(new Field(new Location[]{new Location("localCurrencyDecimialPlace")},"Local Currency Decimal Place",1,String.class));
-		fields.add(new Field(new Location[]{new Location("itemExchangeRate")},"Item Exchange Rate",18,BigDecimal.class));
+		fields.add(new Field(new Location[]{new Location("itemExchangeRate")},"Item Exchange Rate",18,10,BigDecimal.class));
 		fields.add(new Field(new Location[]{new Location("lcAmount")},"LC Amount",22,BigDecimal.class));
 		fields.add(new Field(new Location[]{new Location("fcAmount")},"FC Amount",22,BigDecimal.class));
 		fields.add(new Field(new Location[]{new Location("vatLcAmount")},"VAT LC Amount",22,BigDecimal.class));
@@ -63,7 +65,7 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 		fields.add(new Field(new Location[]{new Location("vatSubtotalFcAmount")},"VAT Subtotal FC Amount",22,BigDecimal.class));
 		fields.add(new Field(new Location[]{new Location("vatSubtotalVatableLcAmount")},"VAT Subtotal Vatable LC Amount",22,BigDecimal.class));
 		fields.add(new Field(new Location[]{new Location("vatSubtotalLcAmount")},"VAT Subtotal LC Amount",22,BigDecimal.class));
-		fields.add(new Field(new Location[]{new Location("vatSubtotalPercentage")},"VAT Subtotal Percentage",5,BigDecimal.class));
+		fields.add(new Field(new Location[]{new Location("vatSubtotalPercentage")},"VAT Subtotal Percentage",5,2,BigDecimal.class));
 		fields.add(new Field(new Location[]{new Location("subtotalVatCode")},"VAT Subtotal VAT Code",2,String.class));
 		fields.add(new Field(new Location[]{new Location("originalDocumentNumber")},"Original Document Number",20,String.class));
 		file.setFields(fields);
@@ -81,19 +83,24 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineLcAmount")},"Charge Line LC Amount",22,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineFcAmount")},"Charge Line FC Amount",22,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("vatCode")},"VAT Code",2,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("vatPercentage")},"VAT Percentage",5,String.class));
+		dtlfields.add(new Field(new Location[]{new Location("vatPercentage")},"VAT Percentage",5,2,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineVatLcAmount")},"Charge Line VAT LC Amount",22,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineVatFcAmount")},"Charge Line VAT FC Amount",22,String.class));
+		dtlfields.add(new Field(new Location[]{new Location("vatCode2")},"VAT Code 2",2,String.class));
+		dtlfields.add(new Field(new Location[]{new Location("vatPercentage2")},"VAT Percentage 2",5,2,String.class));
+		dtlfields.add(new Field(new Location[]{new Location("chargeLineVatLcAmount2")},"Charge Line VAT LC Amount 2",22,String.class));
+		dtlfields.add(new Field(new Location[]{new Location("chargeLineVatFcAmount2")},"Charge Line VAT FC Amount 2",22,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("billingCompletedIndicator")},"Billing Completed Indicator",1,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineRemarks")},"Charge Line Remarks",50,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineParticular")},"Charge Line Particular",1000,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("customerReference")},"Customer Reference",150,String.class));
 		dtlfile.setFields(dtlfields);
 		dtlfile.setRootType(InvoiceARLine.class);
-		dtlfile.setLocation(Arrays.asList(new Location("invoiceARLines")));
+		dtlfile.setLocation(Arrays.asList(new Location("invoiceARLines",true)));
 		
 		
 		AS400_MAP = new ComplexFileDefinition();
+		AS400_MAP.setRootType(InvoiceARHeader.class);
 		AS400_MAP.addRowType("HDR",file);
 		AS400_MAP.addRowType("DTL", dtlfile);
 		AS400_MAP.setTypeResetValue("HDR");
