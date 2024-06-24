@@ -128,9 +128,15 @@ public class InvoiceConverter extends KNObjectConverter<InvoiceType,InvoiceARHea
 		note.setValue(input.getItemParticular());
 		invoice.getNote().add(note);
 		
-		invoice.getAdditionalDocumentReference().add(input.getItemParticular2());
-		invoice.getAdditionalDocumentReference().add(input.getItemParticular3());
-		invoice.getAdditionalDocumentReference().add(input.getItemParticular4());
+		if(input.getItemParticular2()!=null) {
+			invoice.getAdditionalDocumentReference().add(getDocumentReference(input.getItemParticular2(),"Item Particular 2"));
+		}
+		if(input.getItemParticular3()!=null) {
+			invoice.getAdditionalDocumentReference().add(getDocumentReference(input.getItemParticular3(),"Item Particular 3"));
+		}
+		if(input.getItemParticular4()!=null) {
+			invoice.getAdditionalDocumentReference().add(getDocumentReference(input.getItemParticular4(),"Item Particular 4"));
+		}
 		
 		TaxTotalType subTotalTaxTotal = new TaxTotalType();
 		TaxSubtotalType taxSubtotal = new TaxSubtotalType();
@@ -155,7 +161,7 @@ public class InvoiceConverter extends KNObjectConverter<InvoiceType,InvoiceARHea
 		subTotalTaxTotal.getTaxSubtotal().add(taxSubtotal);
 		invoice.getTaxTotal().add(subTotalTaxTotal);
 		
-		invoice.getAdditionalDocumentReference().add(input.getOriginalDocumentNumber());
+		invoice.getAdditionalDocumentReference().add(getDocumentReference(input.getOriginalDocumentNumber(),"Original Document Number"));
 		
 		for (InvoiceARLine line: input.getInvoiceARLines()) {
 			InvoiceLineType invoiceLine = new InvoiceLineType();
@@ -225,9 +231,9 @@ public class InvoiceConverter extends KNObjectConverter<InvoiceType,InvoiceARHea
 		return new ObjectFactory().createInvoice(input);
 	}
 	
-	private DocumentReferenceType getDocumentReference(String value, int id) {
+	private DocumentReferenceType getDocumentReference(String value, String id) {
 		IDType idType = new IDType();
-		idType.setValue(String.valueOf(id));
+		idType.setValue(id);
 		DocumentReferenceType documentReference = new DocumentReferenceType();
 		XPathType xPath = new XPathType();
 		xPath.setValue(value);

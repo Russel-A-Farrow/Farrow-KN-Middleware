@@ -230,7 +230,7 @@
                                     <packagename>com.kn.services.kninvoiceheader</packagename>
                                 </xsdOption>
                                 <xsdOption>
-                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/AR_Invoice/customize/Farrow-UBL-Invoice-2.0.xsd</xsd>
+                                    <xsd>${project.basedir}/src/main/resources/xsds/Acon_Interface_XSD/AR_Invoice/customize/KN-UBL-Invoice-2.0.xsd</xsd>
                                     <!--<packagename>com.kn.services.invoicear</packagename>-->
                                     <bindingFile>${project.basedir}/src/main/resources/xsds/binding.xjb</bindingFile>
                                 </xsdOption>
