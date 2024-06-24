@@ -128,9 +128,9 @@ public class InvoiceConverter extends KNObjectConverter<InvoiceType,InvoiceARHea
 		note.setValue(input.getItemParticular());
 		invoice.getNote().add(note);
 		
-		invoice.getAdditionalDocumentReference().add(getDocumentReference(input.getItemParticular2(), 1));
-		invoice.getAdditionalDocumentReference().add(getDocumentReference(input.getItemParticular3(), 2));
-		invoice.getAdditionalDocumentReference().add(getDocumentReference(input.getItemParticular4(), 3));
+		invoice.getAdditionalDocumentReference().add(input.getItemParticular2());
+		invoice.getAdditionalDocumentReference().add(input.getItemParticular3());
+		invoice.getAdditionalDocumentReference().add(input.getItemParticular4());
 		
 		TaxTotalType subTotalTaxTotal = new TaxTotalType();
 		TaxSubtotalType taxSubtotal = new TaxSubtotalType();
@@ -155,7 +155,7 @@ public class InvoiceConverter extends KNObjectConverter<InvoiceType,InvoiceARHea
 		subTotalTaxTotal.getTaxSubtotal().add(taxSubtotal);
 		invoice.getTaxTotal().add(subTotalTaxTotal);
 		
-		invoice.getAdditionalDocumentReference().add(getDocumentReference(input.getOriginalDocumentNumber(), 4));
+		invoice.getAdditionalDocumentReference().add(input.getOriginalDocumentNumber());
 		
 		for (InvoiceARLine line: input.getInvoiceARLines()) {
 			InvoiceLineType invoiceLine = new InvoiceLineType();
