@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ (C) Copyright. Kuehne + Nagel All rights reserved.
+  ~
+  ~ This document, which contains confidential material, is private and
+  ~ confidential and is the property and copyright of Kuehne + Nagel. It is not
+  ~ to be used for any other purposes, copied, distributed or transmitted in any
+  ~ form or by any means without the prior written consent of Kuehne + Nagel.
+  ~ Infringement of copyright is a serious civil and criminal offense, which can
+  ~ result in heavy fines and payment of substantial damages.
+  -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:com="http://services.kn.com/xsd/acon/Common/v1"
+           xmlns:lex="http://services.kn.com/xsd/acon/Common/LEXCommon/v1"
+           xmlns="http://services.kn.com/xsd/acon/ar/GetLtiData/v1"
+           targetNamespace="http://services.kn.com/xsd/acon/ar/GetLtiData/v1"
+           attributeFormDefault="unqualified" elementFormDefault="qualified"
+           version="1.0">
+
+    <xsd:import namespace="http://services.kn.com/xsd/acon/Common/v1"
+               schemaLocation="../common/ACON-CommonTypes-V1_1.xsd"/>
+    <xsd:import namespace="http://services.kn.com/xsd/acon/Common/LEXCommon/v1"
+               schemaLocation="../common/ACON-LEXCommonTypes-V1_0.xsd"/>
+
+    <xsd:element name="GetLtiDataInfos">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="GetLtiDataInfo" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="GetLtiDataInfo" type="GetLtiDataInfoType"/>
+
+    <xsd:complexType name="GetLtiDataInfoType">
+        <xsd:sequence>
+            <xsd:element type="com:CompanyCodeType" name="CompanyCode" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="lex:ItemTypeLongFormType" name="ItemType" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:ItemNoType" name="OriginalItemNumber" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="com:ItemNoType" name="BookingItemNumber" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="LtiNoType" name="LtiNubmer" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:boolean" name="SuccessIndicator" minOccurs="1" maxOccurs="1"/>
+            <xsd:element type="TransmissionMsgType" name="TransmissionMessage" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:date" name="ItemDate" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="xsd:date" name="DueDate" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="SecondLtiNumberType" name="SecondLtiNumber" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="LtiStatusType" name="LtiStatus" minOccurs="0" maxOccurs="1"/>
+            <xsd:element type="LtiPayerTitleType" name="LtiPayerTitle" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:simpleType name="SecondLtiNumberType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="50"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="LtiStatusType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="15"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="LtiPayerTitleType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="200"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="LtiNoType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="150"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="TransmissionMsgType">
+        <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="200"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>
