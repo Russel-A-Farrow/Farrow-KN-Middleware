@@ -73,4 +73,10 @@ public class QueueItem {
 		errorMessage varchar(1024) NOT null,
 		stacktrace varchar(31000)
 	)
+	
+	CREATE TABLE devknmiddleware.queueOutputFileNames (
+		queueid int NOT NULL,
+		outputFileId int NOT NULL,
+		filename varchar(255) NOT null
+	)
 */
