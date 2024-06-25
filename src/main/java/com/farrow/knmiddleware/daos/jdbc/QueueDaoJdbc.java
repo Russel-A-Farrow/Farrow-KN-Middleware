@@ -393,7 +393,7 @@ public class QueueDaoJdbc extends AbstractFssbfdDaoJdbc{
 		MapSqlParameterSource data = new MapSqlParameterSource();
 		data.addValue("queueId", itemId);
 		data.addValue("type", type);
-		data.addValue("message", StringUtils.substring(e.getMessage(), 0, 1024));
+		data.addValue("message", StringUtils.substring(StringUtils.trimToEmpty(e.getMessage()), 0, 1024));
 		data.addValue("stacktrace", ExceptionUtils.getStackTrace(e));
 		jdbcTemplate.update(query, data);
 	}

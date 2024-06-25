@@ -40,9 +40,12 @@ public class Field {
 		if(decimalPlaces!=null) {
 			value = value.substring(0,size-decimalPlaces) + '.' + value.substring(size-decimalPlaces);
 		}
-		
-		if(type.equals(String.class)) {
-			return StringUtils.trim(value);
+		value=StringUtils.trimToNull(value);
+		if(value==null) {
+			return null;
+		}
+		else if(type.equals(String.class)) {
+			return value;
 		}
 		else if(type.equals(Integer.class)) {
 			return Integer.parseInt(value);
@@ -57,7 +60,7 @@ public class Field {
 			return new BigDecimal(value);
 		}
 		else if(type.equals(XMLGregorianCalendar.class)) {
-			return DatatypeFactory.newInstance().newXMLGregorianCalendar(value);
+			return DatatypeFactory.newInstance().newXMLGregorianCalendar(value.replaceAll("\\/", "-"));
 		}
 		else {
 			try {

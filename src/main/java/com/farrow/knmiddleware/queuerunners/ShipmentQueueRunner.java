@@ -1,6 +1,7 @@
 package com.farrow.knmiddleware.queuerunners;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.farrow.knmiddleware.converters.ShipmentDetailsConverter;
 import com.farrow.knmiddleware.dto.DataType;
@@ -11,6 +12,7 @@ import com.farrow.knmiddleware.dto.SourceSystem;
 import com.farrow.knmiddleware.exceptions.UnsupportedSourceSystemException;
 import com.kn.services.shipmentdetails.ShipmentDetails;
 
+@Component
 public class ShipmentQueueRunner extends QueueRunner  {
 
 	

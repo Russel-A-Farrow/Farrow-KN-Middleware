@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.farrow.knmiddleware.FarrowKnMiddlewareApplication;
 import com.farrow.knmiddleware.domain.mapping.AbstractSimpleFile;
 import com.farrow.knmiddleware.domain.mapping.ComplexFileDefinition;
 import com.farrow.knmiddleware.domain.mapping.DelimitedFileDefinition;
@@ -24,6 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class FileObjectMappingUtility {
 	
+	private static final Logger log = LogManager.getLogger(FileObjectMappingUtility.class);
+	
 	public static final String DO_NOT_MAP = "^DONOTMAP^";
 	@Autowired private ObjectMapper mapper;
 	
@@ -32,21 +37,28 @@ public class FileObjectMappingUtility {
 		Map<String,Object> map = new HashMap<>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fileIs));
 		String line = null;
+		int i=1;
 		while ((line = reader.readLine())!=null) {
-			String type = line.substring(0, file.getTypeFieldSize());
-			if( file.getTypeResetValue()!=null && type.equals(file.getTypeResetValue())) {
-				if(list.size()>0) {
-					list.add(mapper.convertValue(map, file.getRootType()));
-					map = new HashMap<>();
+			try {
+				String type = line.substring(0, file.getTypeFieldSize());
+				if( file.getTypeResetValue()!=null && type.equals(file.getTypeResetValue())) {
+					if(list.size()>0) {
+						list.add(mapper.convertValue(map, file.getRootType()));
+						map = new HashMap<>();
+					}
+					map.putAll(mapLine(line,file.getRowTypes().get(type))); 
 				}
-				map.putAll(mapLine(line,file.getRowTypes().get(type))); 
+				else {
+					Map<String,Object> valueMap = mapLine(line,file.getRowTypes().get(type));
+					Object value = mapper.convertValue(valueMap, file.getRowTypes().get(type).getRootType());
+					addToMapLocation(value, file.getRowTypes().get(type).getLocation(), map);
+				}
+				i++;
 			}
-			else {
-				Map<String,Object> valueMap = mapLine(line,file.getRowTypes().get(type));
-				Object value = mapper.convertValue(valueMap, file.getRowTypes().get(type).getRootType());
-				addToMapLocation(value, file.getRowTypes().get(type).getLocation(), map);
+			catch (Exception e) {
+				log.error("Line {} - {} {}",i,line,e);
+				throw e;
 			}
-			
 		}
 		list.add(mapper.convertValue(map, file.getRootType()));
 		return list;
@@ -101,13 +113,13 @@ public class FileObjectMappingUtility {
 				}
 				else if(!notList && id!=null) {
 					if(currentMap.get(prop)!=null && currentMap.get(prop) instanceof List) {
-						Object item = ((List<Object>)currentMap.get(prop)).get(id);
-						if(item == null) {
+						if(((List<Object>)currentMap.get(prop)).size()<id) {
 							Map<String,Object> newMap = new HashMap<String,Object>();
 							((List<Object>)currentMap.get(prop)).add(id,newMap);
 							currentMap=newMap;
 						}
 						else {
+							Object item = ((List<Object>)currentMap.get(prop)).get(id);
 							currentMap=(Map<String,Object>)item;
 						}
 					}
@@ -129,14 +141,22 @@ public class FileObjectMappingUtility {
 	
 	private Map<String,Object> mapDelimitedLine(String line, DelimitedFileDefinition def) throws Exception{		
 		Map<String,Object> map = new HashMap<>();
-		List<String> tempFields =  Arrays.asList(line.split(def.getDelimiter()));
+		String[] fieldVals = line.split(def.getDelimiter());
+		List<String> tempFields =  Arrays.asList(fieldVals);
 		if(def.getFields().size()!=tempFields.size()) {
-			throw new UnsupportedOperationException("Definition field size doesn't match actual field size");
+			throw new UnsupportedOperationException("Definition field size doesn't match actual field size: "+def.getFields().size()+" "+tempFields.size());
 		}
 		for(int i=0;i<def.getFields().size();i++) {
 			Field field = def.getFields().get(i);
-			Object value = field.parse(tempFields.get(i));
-			addToMapLocation(value,field.getLocation(),map);
+			try {
+				
+				Object value = field.parse(tempFields.get(i));
+				addToMapLocation(value,field.getLocation(),map);
+			}
+			catch(Exception e) {
+				log.error("{} {}",field.getFieldName(),e);
+				throw e;
+			}
 		}
 		return map;
 	}
@@ -148,9 +168,15 @@ public class FileObjectMappingUtility {
 		Integer startPos = 0;
 		for(int i=0;i<def.getFields().size();i++) {
 			Field field = def.getFields().get(i);
-			Object value = field.parse(line.substring(startPos, startPos+field.getSize()));
-			startPos+=field.getSize();
-			addToMapLocation(value,field.getLocation(),map);
+			try {
+				Object value = field.parse(line.substring(startPos, startPos+field.getSize()));
+				startPos+=field.getSize();
+				addToMapLocation(value,field.getLocation(),map);
+			}
+			catch(Exception e) {
+				log.error("{} {}",field.getFieldName(),e);
+				throw e;
+			}
 		}
 		return map;
 	}
