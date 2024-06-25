@@ -1,8 +1,8 @@
 package com.farrow.knmiddleware.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -38,8 +38,8 @@ public class ShipmentDetailsDTO {
 	private String shipperReference;
 	private String consigneeReference;
 	private String principalReference;
-	private XMLGregorianCalendar etdEtsDate;
-	private XMLGregorianCalendar etaDate;
+	private LocalDate etdEtsDate;
+	private LocalDate etaDate;
 	private String consignmentID;
 	private String mawbNo;
 	private String hawbNo;

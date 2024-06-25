@@ -22,7 +22,7 @@ public abstract class KNObjectConverter<T,F> {
 		}
 	}
 	
-	public abstract T convertToKNObject(F input);
+	public abstract T convertToKNObject(F input) throws Exception;
 	
 	public abstract JAXBElement<T> createObject(T input);
 	

@@ -1,5 +1,12 @@
 package com.farrow.knmiddleware.converters;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 
 import org.springframework.stereotype.Component;
@@ -24,7 +31,7 @@ public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,
 	}
 	
 	@Override
-	public ShipmentDetails convertToKNObject(ShipmentDetailsDTO input) {
+	public ShipmentDetails convertToKNObject(ShipmentDetailsDTO input) throws Exception {
 		ShipmentDetails shipmentDetails = new ShipmentDetails();
 		ShipmentDetailType shipmentDetail = new ShipmentDetailType();
 		shipmentDetail.setCompanyCode(input.getCompanyCode());
@@ -49,8 +56,9 @@ public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,
 		shipmentDetail.setShipperReference(input.getShipperReference());
 		shipmentDetail.setConsigneeReference(input.getConsigneeReference());
 		shipmentDetail.setPrincipalReference(input.getPrincipalReference());
-		shipmentDetail.setEtdEtsDate(input.getEtdEtsDate());
-		shipmentDetail.setEtaDate(input.getEtaDate());
+
+		shipmentDetail.setEtdEtsDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(input.getEtdEtsDate().toString()));
+		shipmentDetail.setEtaDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(input.getEtaDate().toString()));
 		shipmentDetail.setConsignmentID(input.getConsignmentID());
 		shipmentDetail.setMawbNo(input.getMawbNo());
 		shipmentDetail.setHawbNo(input.getHawbNo());
