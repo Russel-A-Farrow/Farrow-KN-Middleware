@@ -37,7 +37,7 @@ public class QueueDaoJdbc extends AbstractFssbfdDaoJdbc{
 		Integer id = null;
 		try (Connection con = dataSource.getConnection();) {
 			
-			String query = "insert into queue (sourceSystem ,dataType ,inputFileId ,objectFileId, outputXmlId) values (?,?,?,?,?)";
+			String query = "insert into queue (sourceSystem ,dataType ,inputFileId ,objectFileId, outputXmlId,startConversionAfter) values (?,?,?,?,?,?)";
 			try (PreparedStatement stmt = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);) {
 				stmt.setString(1, item.getSourceSystem().toString());
 				stmt.setString(2, item.getDataType().toString());
@@ -61,6 +61,13 @@ public class QueueDaoJdbc extends AbstractFssbfdDaoJdbc{
 				}
 				else {
 					stmt.setNull(5, Types.INTEGER);
+				}
+				if(item.getStartConversionAfter()!=null) {
+					
+					stmt.setTimestamp(6, Timestamp.valueOf(item.getStartConversionAfter()));
+				}
+				else {
+					stmt.setNull(6, Types.TIMESTAMP);
 				}
 				int affectedRows = stmt.executeUpdate();
 				if (affectedRows == 0) {
@@ -293,7 +300,7 @@ public class QueueDaoJdbc extends AbstractFssbfdDaoJdbc{
 	public QueueItem lockNextConversionJob() throws QueueItemLockedException, SQLException, FileMissingException {
 		Integer id = null;
 		try (Connection con = dataSource.getConnection();) {
-			String queryStr = "SELECT id, conversionRunOn, conversionStarted FROM queue WHERE conversionStarted is null ORDER BY created ASC fetch first 1 row only";
+			String queryStr = "SELECT id, conversionRunOn, conversionStarted FROM queue WHERE conversionStarted is null AND (startConversionAfter is null OR current_timestamp>startConversionAfter) ORDER BY created ASC fetch first 1 row only";
 			try (PreparedStatement stmt = con.prepareStatement(queryStr, ResultSet.TYPE_FORWARD_ONLY,
 					ResultSet.CONCUR_UPDATABLE);) {
 				try (ResultSet rs = stmt.executeQuery()) {
