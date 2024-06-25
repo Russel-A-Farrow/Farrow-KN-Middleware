@@ -398,6 +398,15 @@ public class QueueDaoJdbc extends AbstractFssbfdDaoJdbc{
 		jdbcTemplate.update(query, data);
 	}
 	
+	public void saveFileName(Integer itemId, Integer outputFileId, String filename) {
+		String query = "insert into queueOutputFileNames (queueid ,outputFileId ,filename ) values (:queueId,:outputFileId,:filename)";
+		MapSqlParameterSource data = new MapSqlParameterSource();
+		data.addValue("queueId", itemId);
+		data.addValue("filename", filename);
+		data.addValue("outputFileId", outputFileId);
+		jdbcTemplate.update(query, data);
+	}
+	
 	public void cleanupExceptions(LocalDateTime threshold) {
 		String query = "delete from queueExceptions where created < :threshold";
 		MapSqlParameterSource data = new MapSqlParameterSource();

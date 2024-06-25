@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* (C) Copyright. Kuehne + Nagel All rights reserved.
+*
+* This document, which contains confidential material, is private and
+* confidential and is the property and copyright of Kuehne + Nagel. It is not
+* to be used for any other purposes, copied, distributed or transmitted in any
+* form or by any means without the prior written consent of Kuehne + Nagel.
+* Infringement of copyright is a serious civil and criminal offense, which can
+* result in heavy fines and payment of substantial damages.
+-->
+ 
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://services.kn.com/xsd/acon/Common/LEXCommon/v1"
+           targetNamespace="http://services.kn.com/xsd/acon/Common/LEXCommon/v1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0">
+ 
+    <xsd:simpleType name="ItemTypeLongFormType">
+<xsd:restriction base="xsd:normalizedString">
+<xsd:enumeration value="INVOICE"/>
+<xsd:enumeration value="CREDITNOTE"/>
+</xsd:restriction>
+</xsd:simpleType>
+ 
+</xsd:schema>
