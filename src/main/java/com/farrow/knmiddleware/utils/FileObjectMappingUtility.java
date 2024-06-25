@@ -72,6 +72,7 @@ public class FileObjectMappingUtility {
 			for(int i=0;i<location.size();i++) {
 				String prop=location.get(i).getProp();
 				boolean notList = !location.get(i).isList();
+				Integer id = location.get(i).getId();
 				if((i+1)==location.size()) {
 					//Add property
 					if(notList) {
@@ -98,8 +99,28 @@ public class FileObjectMappingUtility {
 					currentMap=newMap;
 					
 				}
-				else if(!notList) {
-					throw new UnsupportedOperationException("List not suppoted in middle locations");
+				else if(!notList && id!=null) {
+					if(currentMap.get(prop)!=null && currentMap.get(prop) instanceof List) {
+						Object item = ((List<Object>)currentMap.get(prop)).get(id);
+						if(item == null) {
+							Map<String,Object> newMap = new HashMap<String,Object>();
+							((List<Object>)currentMap.get(prop)).add(id,newMap);
+							currentMap=newMap;
+						}
+						else {
+							currentMap=(Map<String,Object>)item;
+						}
+					}
+					else if (currentMap.get(prop)==null) {
+						List<Object> list = new ArrayList<>();
+						currentMap.put(prop, list);
+						Map<String,Object> newMap = new HashMap<String,Object>();
+						list.add(id,newMap);
+						currentMap=newMap;
+					}
+				}
+				else {
+					throw new UnsupportedOperationException("Unsupported location options");
 				}
 			}
 		}

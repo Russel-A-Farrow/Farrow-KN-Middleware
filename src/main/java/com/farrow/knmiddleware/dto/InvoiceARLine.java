@@ -1,6 +1,7 @@
 package com.farrow.knmiddleware.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,7 @@ public class InvoiceARLine {
 	private String creditorCode;
 	private BigDecimal chargeLineLcAmount;
 	private BigDecimal chargeLineFcAmount;
-	private String vatCode;
-	private BigDecimal vatPercentage;
-	private BigDecimal chargeLineVatLcAmount;
-	private BigDecimal chargeLineVatFcAmount;
-	private String vatCode2;
-	private BigDecimal vatPercentage2;
-	private BigDecimal chargeLineVatLcAmount2;
-	private BigDecimal chargeLineVatFcAmount2;
+	private List<InvoiceARLineVat> lineVats;
 	private String billingCompletedIndicator;
 	private String creditRequestNumber;
 	private String chargeLineRemarks;

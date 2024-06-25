@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.farrow.knmiddleware.dto.InvoiceARHeader;
 import com.farrow.knmiddleware.dto.InvoiceARLine;
+import com.farrow.knmiddleware.dto.InvoiceARLineVat;
 import com.farrow.knmiddleware.dto.KNObjectConverter;
 import com.kn.services.kninvoiceheader.InvoiceHeaderInfo;
 import com.kn.services.kninvoiceheader.YesNoType;
@@ -190,28 +191,31 @@ public class InvoiceConverter extends KNObjectConverter<InvoiceType,InvoiceARHea
 			lineExtensionAmount.setValue(line.getChargeLineFcAmount());
 			invoiceLine.setLineExtensionAmount(lineExtensionAmount);
 			
-			TaxTotalType lineTaxTotal = new TaxTotalType();
-			TaxSubtotalType lineTaxSubTotal = new TaxSubtotalType();
-			TaxCategoryType lineTaxCategory = new TaxCategoryType();
-			IDType lineTaxCatoryId = new IDType();
-			lineTaxCatoryId.setValue(line.getVatCode());
-			lineTaxCategory.setID(lineTaxCatoryId);
-			lineTaxSubTotal.setTaxCategory(taxCategory);
-			
-			PercentType linePercent = new PercentType();
-			linePercent.setValue(line.getVatPercentage());
-			taxSubtotal.setPercent(subtotalPercent);
-			lineTaxTotal.getTaxSubtotal().add(lineTaxSubTotal);
-			
-			TaxableAmountType lineTaxAmount = new TaxableAmountType();
-			lineTaxAmount.setValue(line.getChargeLineVatLcAmount());
-			lineTaxTotal.setTaxAmount(subTotaltaxAmount);
-			
-			RoundingAmountType lineRoundingAmount = new RoundingAmountType();
-			lineRoundingAmount.setValue(line.getChargeLineVatFcAmount());
-			lineTaxTotal.setRoundingAmount(subTotalRoundingAmount);
-			invoiceLine.getTaxTotal().add(lineTaxTotal);
-			
+			for (InvoiceARLineVat lineVat:line.getLineVats()) {
+				if(lineVat.getVatCode()!=null && !"".equals(lineVat.getVatCode())) {
+					TaxTotalType lineTaxTotal = new TaxTotalType();
+					TaxSubtotalType lineTaxSubTotal = new TaxSubtotalType();
+					TaxCategoryType lineTaxCategory = new TaxCategoryType();
+					IDType lineTaxCatoryId = new IDType();
+					lineTaxCatoryId.setValue(lineVat.getVatCode());
+					lineTaxCategory.setID(lineTaxCatoryId);
+					lineTaxSubTotal.setTaxCategory(taxCategory);
+					
+					PercentType linePercent = new PercentType();
+					linePercent.setValue(lineVat.getVatPercentage());
+					taxSubtotal.setPercent(subtotalPercent);
+					lineTaxTotal.getTaxSubtotal().add(lineTaxSubTotal);
+					
+					TaxableAmountType lineTaxAmount = new TaxableAmountType();
+					lineTaxAmount.setValue(lineVat.getChargeLineVatLcAmount());
+					lineTaxTotal.setTaxAmount(subTotaltaxAmount);
+					
+					RoundingAmountType lineRoundingAmount = new RoundingAmountType();
+					lineRoundingAmount.setValue(lineVat.getChargeLineVatFcAmount());
+					lineTaxTotal.setRoundingAmount(subTotalRoundingAmount);
+					invoiceLine.getTaxTotal().add(lineTaxTotal);
+				}
+			}
 			BillingReferenceType lineBillingReference = new BillingReferenceType();
 			lineBillingReference.setAdditionalDocumentReference(getDocumentReference(line.getBillingCompletedIndicator()));
 			invoiceLine.getBillingReference().add(lineBillingReference);

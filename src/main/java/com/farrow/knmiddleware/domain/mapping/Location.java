@@ -15,6 +15,12 @@ import lombok.Setter;
 public class Location {
 	private String prop;
 	private boolean isList = false;
+	private Integer id;
+	
+	public Location (String prop, boolean isList) {
+		this.prop=prop;
+		this.isList=isList;
+	}
 	public Location(String prop) {
 		this.prop=prop;
 	}

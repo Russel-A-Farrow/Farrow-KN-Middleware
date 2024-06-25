@@ -83,14 +83,12 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 		dtlfields.add(new Field(new Location[]{new Location("chargeCategory")},"Charge Category",3,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineLcAmount")},"Charge Line LC Amount",22,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineFcAmount")},"Charge Line FC Amount",22,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("vatCode")},"VAT Code",2,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("vatPercentage")},"VAT Percentage",5,2,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("chargeLineVatLcAmount")},"Charge Line VAT LC Amount",22,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("chargeLineVatFcAmount")},"Charge Line VAT FC Amount",22,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("vatCode2")},"VAT Code 2",2,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("vatPercentage2")},"VAT Percentage 2",5,2,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("chargeLineVatLcAmount2")},"Charge Line VAT LC Amount 2",22,String.class));
-		dtlfields.add(new Field(new Location[]{new Location("chargeLineVatFcAmount2")},"Charge Line VAT FC Amount 2",22,String.class));
+		for(int i = 0; i<2;i++) {
+			dtlfields.add(new Field(new Location[]{new Location("lineVats",true,i),new Location("vatCode")},"VAT Code",2,String.class));
+			dtlfields.add(new Field(new Location[]{new Location("lineVats",true,i),new Location("vatPercentage")},"VAT Percentage",5,2,String.class));
+			dtlfields.add(new Field(new Location[]{new Location("lineVats",true,i),new Location("chargeLineVatLcAmount")},"Charge Line VAT LC Amount",22,String.class));
+			dtlfields.add(new Field(new Location[]{new Location("lineVats",true,i),new Location("chargeLineVatFcAmount")},"Charge Line VAT FC Amount",22,String.class));
+		}
 		dtlfields.add(new Field(new Location[]{new Location("billingCompletedIndicator")},"Billing Completed Indicator",1,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineRemarks")},"Charge Line Remarks",50,String.class));
 		dtlfields.add(new Field(new Location[]{new Location("chargeLineParticular")},"Charge Line Particular",1000,String.class));
@@ -183,17 +181,13 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 			dtlfields.add(new Field(new Location[]{new Location("creditorCode")},"Creditor Code",10,String.class));
 			dtlfields.add(new Field(new Location[]{new Location("chargeLineLcAmount")},"Charge Line LC Amount",22,String.class));
 			dtlfields.add(new Field(new Location[]{new Location("chargeLineFcAmount")},"Charge Line FC Amount",22,String.class));
-			//
-			dtlfields.add(new Field(new Location[]{new Location("vatCode")},"VAT Code",2,String.class));
-			dtlfields.add(new Field(new Location[]{new Location("vatPercentage")},"VAT Percentage",5,2,String.class));
-			dtlfields.add(new Field(new Location[]{new Location("chargeLineVatLcAmount")},"Charge Line VAT LC Amount",22,String.class));
-			dtlfields.add(new Field(new Location[]{new Location("chargeLineVatFcAmount")},"Charge Line VAT FC Amount",22,String.class));
-			//
-			dtlfields.add(new Field(new Location[]{new Location("vatCode2")},"VAT Code 2",2,String.class));
-			dtlfields.add(new Field(new Location[]{new Location("vatPercentage2")},"VAT Percentage 2",5,2,String.class));
-			dtlfields.add(new Field(new Location[]{new Location("chargeLineVatLcAmount2")},"Charge Line VAT LC Amount 2",22,String.class));
-			dtlfields.add(new Field(new Location[]{new Location("chargeLineVatFcAmount2")},"Charge Line VAT FC Amount 2",22,String.class));
-			//
+			for(int i = 0; i<13;i++) {
+				dtlfields.add(new Field(new Location[]{new Location(FileObjectMappingUtility.DO_NOT_MAP)},"Province Code",2,String.class));
+				dtlfields.add(new Field(new Location[]{new Location("lineVats",true,i),new Location("vatCode")},"VAT Code",2,String.class));
+				dtlfields.add(new Field(new Location[]{new Location("lineVats",true,i),new Location("vatPercentage")},"VAT Percentage",5,2,String.class));
+				dtlfields.add(new Field(new Location[]{new Location("lineVats",true,i),new Location("chargeLineVatLcAmount")},"Charge Line VAT LC Amount",22,String.class));
+				dtlfields.add(new Field(new Location[]{new Location("lineVats",true,i),new Location("chargeLineVatFcAmount")},"Charge Line VAT FC Amount",22,String.class));
+			}
 			dtlfields.add(new Field(new Location[]{new Location("billingCompletedIndicator")},"Billing Completed Indicator",1,String.class));
 			dtlfields.add(new Field(new Location[]{new Location("creditRequestNumber")},"Credit Request Number",17,String.class));
 			dtlfields.add(new Field(new Location[]{new Location("chargeLineRemarks")},"Charge Line Remarks",50,String.class));
