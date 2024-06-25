@@ -25,6 +25,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.TaxS
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_2.TaxTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.AccountingCostType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.CalculationRateType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.DocumentTypeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.InvoiceTypeCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_2.IssueDateType;
@@ -235,10 +236,10 @@ public class InvoiceConverter extends KNObjectConverter<InvoiceType,InvoiceARHea
 		IDType idType = new IDType();
 		idType.setValue(id);
 		DocumentReferenceType documentReference = new DocumentReferenceType();
-		XPathType xPath = new XPathType();
-		xPath.setValue(value);
-		documentReference.getXPath().add(xPath);
 		documentReference.setID(idType);
+		DocumentTypeType docType = new DocumentTypeType();
+		docType.setValue(value);
+		documentReference.setDocumentType(docType);
 		return documentReference;
 	}
 	

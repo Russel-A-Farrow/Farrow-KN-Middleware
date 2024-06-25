@@ -33,6 +33,7 @@ public class InvoiceARLine {
 	private String billingCompletedIndicator;
 	private String creditRequestNumber;
 	private String chargeLineRemarks;
+	private BigDecimal chargeLineVatLcAmountLineLevel;
 	private String opsChargeCode;
 	private String chargeLineParticular;
 	private String customerReference;

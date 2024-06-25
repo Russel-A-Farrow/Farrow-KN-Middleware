@@ -45,7 +45,7 @@ public class InvoiceARHeader {
 	private XMLGregorianCalendar nacoraItemExpiryDate;
 	private String clientId;
 	private String serviceDate;
-	private String branchReference;
+	private String batchReference;
 	private String a2kTransactionNumber;
 	private String a2rNumber;
 	private String businessKey;

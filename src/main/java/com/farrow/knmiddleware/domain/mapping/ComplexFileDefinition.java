@@ -16,7 +16,7 @@ public class ComplexFileDefinition{
 	private Class<?> rootType;
 	private Integer typeFieldSize;
 	private String typeResetValue;
-	public void addRowType(String string, FlatFileDefinition file) {
+	public void addRowType(String string, AbstractSimpleFile file) {
 		if(rowTypes==null) {
 			rowTypes = new HashMap<String,AbstractSimpleFile>();
 		}
