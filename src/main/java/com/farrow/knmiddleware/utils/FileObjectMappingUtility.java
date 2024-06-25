@@ -113,7 +113,7 @@ public class FileObjectMappingUtility {
 				}
 				else if(!notList && id!=null) {
 					if(currentMap.get(prop)!=null && currentMap.get(prop) instanceof List) {
-						if(((List<Object>)currentMap.get(prop)).size()<id) {
+						if(((List<Object>)currentMap.get(prop)).size()<=id) {
 							Map<String,Object> newMap = new HashMap<String,Object>();
 							((List<Object>)currentMap.get(prop)).add(id,newMap);
 							currentMap=newMap;
