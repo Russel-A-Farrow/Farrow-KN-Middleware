@@ -33,25 +33,6 @@ public class ARController {
 	
 	@Autowired private QueueDaoJdbc queueDao;
 	
-	@PostMapping("/as400test")
-	public void receiveAs400ARPayLoadForTest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		try(	InputStream is = req.getInputStream();
-				InputStreamReader ireader = new InputStreamReader(is);
-				BufferedReader reader = new BufferedReader(ireader);	){
-			
-			while(reader.ready()) {
-				String line = reader.readLine();
-				log.info(line);
-			}
-			
-		}
-		try(	OutputStream ros = resp.getOutputStream();
-				OutputStreamWriter rosw = new OutputStreamWriter(ros);
-				BufferedWriter writer = new BufferedWriter(rosw);){
-			writer.append("OUT234234   23423423 234 234 23 423 423 42");
-		}
-	}
-	
 	@PostMapping("/as400")
 	public void receiveAs400ARPayLoad(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
@@ -73,4 +54,45 @@ public class ARController {
 		
 	}
 	
+	@PostMapping("/tm")
+	public void receiveTMARPayLoad(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+		try(	InputStream is = req.getInputStream();){
+			byte[] inputFile = IOUtils.toByteArray(is);
+			QueueItem item = new QueueItem();
+			item.setDataType(DataType.AR);
+			item.setSourceSystem(SourceSystem.TM);
+			QueueFile file = new QueueFile();
+			file.setFile(inputFile);
+			item.setInputFile(file);
+			
+			Integer id = queueDao.saveNewQueueItem(item);
+			try(	OutputStream ros = resp.getOutputStream();
+					OutputStreamWriter rosw = new OutputStreamWriter(ros);
+					BufferedWriter writer = new BufferedWriter(rosw);){
+				writer.append(""+id);
+			}
+		}
+		
+	}
+	
+	@PostMapping("/pl")
+	public void receivePLARPayLoad(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+		try(	InputStream is = req.getInputStream();){
+			byte[] inputFile = IOUtils.toByteArray(is);
+			QueueItem item = new QueueItem();
+			item.setDataType(DataType.AR);
+			item.setSourceSystem(SourceSystem.PL);
+			QueueFile file = new QueueFile();
+			file.setFile(inputFile);
+			item.setInputFile(file);
+			
+			Integer id = queueDao.saveNewQueueItem(item);
+			try(	OutputStream ros = resp.getOutputStream();
+					OutputStreamWriter rosw = new OutputStreamWriter(ros);
+					BufferedWriter writer = new BufferedWriter(rosw);){
+				writer.append(""+id);
+			}
+		}
+		
+	}
 }
