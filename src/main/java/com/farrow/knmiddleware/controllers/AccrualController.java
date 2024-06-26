@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.xml.bind.JAXBException;
 
 @RestController
-@RequestMapping("/Accrual")
+@RequestMapping("/accrual")
 public class AccrualController {
 	private static final Logger log = LogManager.getLogger(AccrualController.class);
 	
