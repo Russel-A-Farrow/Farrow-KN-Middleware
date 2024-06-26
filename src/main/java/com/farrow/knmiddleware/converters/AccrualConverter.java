@@ -20,7 +20,7 @@ public class AccrualConverter extends KNObjectConverter<AccruedExpenses,AccrualD
 
 	private static final QName _AccruedExpenses_QNAME = new QName("http://services.kn.com/xsd/acon/fsl/AccuredExpenses/v1", "AccruedExpenses");
 	
-	public AccrualConverter(JAXBContext context) throws JAXBException {
+	public AccrualConverter() throws JAXBException {
 		super(JAXBContext.newInstance(AccruedExpenses.class,AccruedExpenseType.class));
 	}
 
