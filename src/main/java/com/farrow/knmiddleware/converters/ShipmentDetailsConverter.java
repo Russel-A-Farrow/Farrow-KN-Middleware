@@ -1,18 +1,16 @@
 package com.farrow.knmiddleware.converters;
 
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 
 import org.springframework.stereotype.Component;
 
-import com.farrow.knmiddleware.dto.KNObjectConverter;
+import com.farrow.knmiddleware.dto.AccrualDTO;
 import com.farrow.knmiddleware.dto.ShipmentDetailsDTO;
+import com.kn.services.accuredexpenses.AccruedExpenseType;
+import com.kn.services.accuredexpenses.AccruedExpenses;
 import com.kn.services.shipmentdetails.ShipmentDetailType;
 import com.kn.services.shipmentdetails.ShipmentDetails;
 
@@ -22,7 +20,7 @@ import jakarta.xml.bind.JAXBException;
 
 
 @Component("shipmentDetailsConverter")
-public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,ShipmentDetailsDTO> {
+public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,ShipmentDetailsDTO> implements KNObjectSubTypeConverter<ShipmentDetails,ShipmentDetailsDTO,ShipmentDetailType> {
 	
 	private static final QName _ShipmentDetails_QNAME = new QName("http://services.kn.com/xsd/acon/fsl/ShipmentDetails/v1", "ShipmentDetails");
 	
@@ -30,9 +28,7 @@ public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,
 		super(JAXBContext.newInstance(ShipmentDetails.class, ShipmentDetailType.class));
 	}
 	
-	@Override
-	public ShipmentDetails convertToKNObject(ShipmentDetailsDTO input) throws Exception {
-		ShipmentDetails shipmentDetails = new ShipmentDetails();
+	public ShipmentDetailType convertToKNSubObject(ShipmentDetailsDTO input) throws Exception{
 		ShipmentDetailType shipmentDetail = new ShipmentDetailType();
 		shipmentDetail.setCompanyCode(input.getCompanyCode());
 		shipmentDetail.setTrackingNo(input.getTrackingNo());
@@ -56,9 +52,12 @@ public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,
 		shipmentDetail.setShipperReference(input.getShipperReference());
 		shipmentDetail.setConsigneeReference(input.getConsigneeReference());
 		shipmentDetail.setPrincipalReference(input.getPrincipalReference());
-
-		shipmentDetail.setEtdEtsDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(input.getEtdEtsDate().toString()));
-		shipmentDetail.setEtaDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(input.getEtaDate().toString()));
+		if(input.getEtdEtsDate()!=null) {
+			shipmentDetail.setEtdEtsDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(input.getEtdEtsDate().toString()));
+		}
+		if(input.getEtaDate()!=null) {
+			shipmentDetail.setEtaDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(input.getEtaDate().toString()));
+		}
 		shipmentDetail.setConsignmentID(input.getConsignmentID());
 		shipmentDetail.setMawbNo(input.getMawbNo());
 		shipmentDetail.setHawbNo(input.getHawbNo());
@@ -116,6 +115,28 @@ public class ShipmentDetailsConverter extends KNObjectConverter<ShipmentDetails,
 		shipmentDetail.setSharingCurrency(input.getSharingCurrency());
 		shipmentDetail.setSharingAmount2(input.getSharingAmount2());
 		shipmentDetail.setSharingCurrency2(input.getSharingCurrency2());
+		return shipmentDetail;
+	}
+	
+	public ShipmentDetails convertToKNObject(List<Object> inputs) throws Exception {
+		ShipmentDetails shipmentDetails = new ShipmentDetails();
+		for(Object input:inputs) {
+			if(input instanceof ShipmentDetailsDTO) {
+				ShipmentDetailType shipmentDetail = convertToKNSubObject((ShipmentDetailsDTO)input);
+				shipmentDetails.getShipmentDetail().add(shipmentDetail);
+			}
+			else {
+				throw new UnsupportedOperationException("Unknown class "+ input.getClass());
+			}
+		}
+		return shipmentDetails;
+	}
+	
+	@Override
+	public ShipmentDetails convertToKNObject(ShipmentDetailsDTO input) throws Exception {
+		ShipmentDetails shipmentDetails = new ShipmentDetails();
+		ShipmentDetailType shipmentDetail = convertToKNSubObject(input);
+		
 
 		shipmentDetails.getShipmentDetail().add(shipmentDetail);
 		return shipmentDetails;

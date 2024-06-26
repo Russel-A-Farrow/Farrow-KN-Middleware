@@ -1,4 +1,4 @@
-package com.farrow.knmiddleware.dto;
+package com.farrow.knmiddleware.converters;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

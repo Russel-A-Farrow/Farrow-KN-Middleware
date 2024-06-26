@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import com.farrow.knmiddleware.dto.InvoiceARHeader;
 import com.farrow.knmiddleware.dto.InvoiceARLine;
 import com.farrow.knmiddleware.dto.InvoiceARLineVat;
-import com.farrow.knmiddleware.dto.KNObjectConverter;
 import com.kn.services.kninvoiceheader.InvoiceHeaderInfo;
 import com.kn.services.kninvoiceheader.YesNoType;
 

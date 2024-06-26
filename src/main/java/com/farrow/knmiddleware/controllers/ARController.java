@@ -37,14 +37,7 @@ public class ARController {
 	public void receiveAs400ARPayLoad(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);
-			QueueItem item = new QueueItem();
-			item.setDataType(DataType.AR);
-			item.setSourceSystem(SourceSystem.TSBAS400);
-			QueueFile file = new QueueFile();
-			file.setFile(inputFile);
-			item.setInputFile(file);
-			
-			Integer id = queueDao.saveNewQueueItem(item);
+			Integer id = saveQueueItem(inputFile,SourceSystem.TSBAS400);
 			try(	OutputStream ros = resp.getOutputStream();
 					OutputStreamWriter rosw = new OutputStreamWriter(ros);
 					BufferedWriter writer = new BufferedWriter(rosw);){
@@ -58,14 +51,7 @@ public class ARController {
 	public void receiveTMARPayLoad(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);
-			QueueItem item = new QueueItem();
-			item.setDataType(DataType.AR);
-			item.setSourceSystem(SourceSystem.TM);
-			QueueFile file = new QueueFile();
-			file.setFile(inputFile);
-			item.setInputFile(file);
-			
-			Integer id = queueDao.saveNewQueueItem(item);
+			Integer id = saveQueueItem(inputFile,SourceSystem.TM);
 			try(	OutputStream ros = resp.getOutputStream();
 					OutputStreamWriter rosw = new OutputStreamWriter(ros);
 					BufferedWriter writer = new BufferedWriter(rosw);){
@@ -79,14 +65,7 @@ public class ARController {
 	public void receivePLARPayLoad(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);
-			QueueItem item = new QueueItem();
-			item.setDataType(DataType.AR);
-			item.setSourceSystem(SourceSystem.PL);
-			QueueFile file = new QueueFile();
-			file.setFile(inputFile);
-			item.setInputFile(file);
-			
-			Integer id = queueDao.saveNewQueueItem(item);
+			Integer id = saveQueueItem(inputFile,SourceSystem.PL);
 			try(	OutputStream ros = resp.getOutputStream();
 					OutputStreamWriter rosw = new OutputStreamWriter(ros);
 					BufferedWriter writer = new BufferedWriter(rosw);){
@@ -94,5 +73,31 @@ public class ARController {
 			}
 		}
 		
+	}
+	
+	@PostMapping("/flsi")
+	public void receiveFLSIARPayLoad(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+		try(	InputStream is = req.getInputStream();){
+			byte[] inputFile = IOUtils.toByteArray(is);
+			Integer id = saveQueueItem(inputFile,SourceSystem.FLSI);
+			try(	OutputStream ros = resp.getOutputStream();
+					OutputStreamWriter rosw = new OutputStreamWriter(ros);
+					BufferedWriter writer = new BufferedWriter(rosw);){
+				writer.append(""+id);
+			}
+		}
+		
+	}
+	
+	private Integer saveQueueItem(byte[] inputFile, SourceSystem sys) throws SQLException {
+		QueueItem item = new QueueItem();
+		item.setDataType(DataType.AR);
+		item.setSourceSystem(sys);
+		QueueFile file = new QueueFile();
+		file.setFile(inputFile);
+		item.setInputFile(file);
+		
+		Integer id = queueDao.saveNewQueueItem(item);
+		return id;
 	}
 }

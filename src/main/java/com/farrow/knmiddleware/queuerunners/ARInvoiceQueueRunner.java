@@ -222,7 +222,7 @@ public class ARInvoiceQueueRunner extends QueueRunner {
 			if(SourceSystem.TSBAS400.equals(item.getSourceSystem())) {
 				map=AS400_MAP;
 			}
-			else if(SourceSystem.TM.equals(item.getSourceSystem())||SourceSystem.PL.equals(item.getSourceSystem())) {
+			else if(SourceSystem.TM.equals(item.getSourceSystem())||SourceSystem.PL.equals(item.getSourceSystem())||SourceSystem.FLSI.equals(item.getSourceSystem())) {
 				map=TMPL_MAP;
 			}
 			else {
