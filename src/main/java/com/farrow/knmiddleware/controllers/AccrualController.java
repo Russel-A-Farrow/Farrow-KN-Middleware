@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/accrual")
 
 public class AccrualController extends AbstractSystemFileReceiverController<AccrualDTO> {
-	
 	@Override
 	public ResponseEntity<String> receiveAs400PayLoad(HttpServletRequest req) throws IOException, SQLException {
 		return ResponseEntity.notFound().build();

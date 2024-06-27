@@ -8,7 +8,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.farrow.knmiddleware.daos.jdbc.QueueDaoJdbc;
@@ -18,6 +21,9 @@ import com.farrow.knmiddleware.dto.QueueFile;
 import com.farrow.knmiddleware.dto.QueueItem;
 import com.farrow.knmiddleware.dto.SourceSystem;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletRequest;
 
 public abstract class AbstractSystemFileReceiverController<T> {
@@ -25,13 +31,19 @@ public abstract class AbstractSystemFileReceiverController<T> {
 	
 	@Autowired private QueueDaoJdbc queueDao;
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> exception(Exception e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	}
+	
 	@PostMapping(value="/test")
-	public ResponseEntity<String> receiveTestPayload(T object){
+	public ResponseEntity<String> receiveTestPayload(@org.springframework.web.bind.annotation.RequestBody T object){
 		return ResponseEntity.ok("Successfully mapped to Object");
 	}
 	
 	
 	@PostMapping(value = "/tsb")
+	@RequestBody(content=@Content(schema=@Schema(implementation=String.class)))
 	public ResponseEntity<String> receiveTSBPayload(HttpServletRequest req) throws  IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);
@@ -41,6 +53,7 @@ public abstract class AbstractSystemFileReceiverController<T> {
 	}
 	
 	@PostMapping("/as400")
+	@RequestBody(content=@Content(schema=@Schema(implementation=String.class)))
 	public ResponseEntity<String> receiveAs400PayLoad(HttpServletRequest req) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);
@@ -51,6 +64,7 @@ public abstract class AbstractSystemFileReceiverController<T> {
 	}
 	
 	@PostMapping("/tm")
+	@RequestBody(content=@Content(schema=@Schema(implementation=String.class)))
 	public ResponseEntity<String> receiveTMPayLoad(HttpServletRequest req) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);
@@ -61,6 +75,7 @@ public abstract class AbstractSystemFileReceiverController<T> {
 	}
 	
 	@PostMapping("/pl")
+	@RequestBody(content=@Content(schema=@Schema(implementation=String.class)))
 	public ResponseEntity<String> receivePLPayLoad(HttpServletRequest req) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);
@@ -71,6 +86,7 @@ public abstract class AbstractSystemFileReceiverController<T> {
 	}
 	
 	@PostMapping("/flsi")
+	@RequestBody(content=@Content(schema=@Schema(implementation=String.class)))
 	public ResponseEntity<String> receiveFLSIPayLoad(HttpServletRequest req) throws IOException, SQLException {
 		try(	InputStream is = req.getInputStream();){
 			byte[] inputFile = IOUtils.toByteArray(is);

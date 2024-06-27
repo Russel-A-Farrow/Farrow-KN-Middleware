@@ -46,7 +46,9 @@ public class AccrualConverter extends KNObjectConverter<AccruedExpenses,AccrualD
 		expense.setWeight(input.getWeight());
 		expense.setRemark(input.getRemark());
 		expense.setSequenceNo(input.getSequenceNo());
-		expense.setInterfaceStatus(InterfaceStatusType.valueOf(input.getInterfaceStatus()));
+		if(input.getInterfaceStatus()!=null) {
+			expense.setInterfaceStatus(InterfaceStatusType.valueOf(input.getInterfaceStatus()));
+		}
 		expense.setCostType(input.getCostType());
 		expense.setForeignCurrencyCode(input.getForeignCurrencyCode());
 		expense.setAccrualFCAmount(input.getAccrualFcAcmount());
